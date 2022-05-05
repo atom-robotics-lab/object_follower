@@ -30,8 +30,35 @@ class obj_follower:
   def control_loop(self):
     sc = SampleClass()
     result=sc.fun(self.cv_image)
-    print("control+loop")
-    self.move(0.5,0)
+    x_length=result[0].shape[0]
+    if result[2][0]>(x_length/2+20):
+      self.velocity_msg.linear.x = 1
+      self.velocity_msg.linear.y = 0
+      self.velocity_msg.linear.z = 0
+      self.velocity_msg.angular.x = 0
+      self.velocity_msg.y = 0
+      self.velocity_msg.angular.z = -1
+      self.pub.publish(self.velocity_msg)
+    elif result[2][0]<(x_length/2-20):
+      self.velocity_msg.linear.x = 1
+      self.velocity_msg.linear.y = 0
+      self.velocity_msg.linear.z = 0
+      self.velocity_msg.angular.x = 0
+      self.velocity_msg.y = 0
+      self.velocity_msg.angular.z = 1
+      self.pub.publish(self.velocity_msg)
+    else:
+      self.velocity_msg.linear.x = 1
+      self.velocity_msg.linear.y = 0
+      self.velocity_msg.linear.z = 0
+      self.velocity_msg.angular.x = 0
+      self.velocity_msg.y = 0
+      self.velocity_msg.angular.z = 0
+      self.pub.publish(self.velocity_msg)
+
+
+    #print("control+loop")
+    #self.move(0.5,0)
 
   def move(self, linear, angular):
     print("move")
