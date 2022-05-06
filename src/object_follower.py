@@ -39,6 +39,7 @@ class obj_follower:
       self.velocity_msg.y = 0
       self.velocity_msg.angular.z = -1
       self.pub.publish(self.velocity_msg)
+
     elif result[2][0]<(x_length/2-20):
       self.velocity_msg.linear.x = 1
       self.velocity_msg.linear.y = 0
@@ -47,6 +48,7 @@ class obj_follower:
       self.velocity_msg.y = 0
       self.velocity_msg.angular.z = 1
       self.pub.publish(self.velocity_msg)
+      
     else:
       self.velocity_msg.linear.x = 1
       self.velocity_msg.linear.y = 0
