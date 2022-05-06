@@ -1,23 +1,15 @@
-from collections import deque
-from fcntl import LOCK_WRITE
-from turtle import end_fill
-from imutils.video import VideoStream
-import numpy as np
-import argparse
 import cv2
 import imutils
-import time
 
 class SampleClass:
-	def __init__(self,lower=(29, 86, 6), upper=(64, 255, 255) , counter=0):
+	def __init__(self,lower=(29, 86, 6), upper=(64, 255, 255)):
 		self.lower = lower
 		self.upper = upper
-		self.counter = counter
 
 	def fun(self,frame):
 		self.frame=frame	
 		
-		blurred = cv2.GaussianBlur(frame, (11, 11), 0)
+		blurred = cv2.GaussianBlur(self.frame, (11, 11), 0)
 		hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
 		mask = cv2.inRange(hsv, self.lower, self.upper)
 		mask = cv2.erode(mask, None, iterations=2)
@@ -37,12 +29,14 @@ class SampleClass:
 				cv2.circle(frame, center, 5, (0, 0, 255), -1)
 		return [frame,mask,center,radius]
 
+		 
 if __name__=="__main__":
-	sc = SampleClass((29, 86, 6),(64, 255, 255),0)
-	result=sc.fun(cv2.imread("/home/harsh/catkin_ws/src/scripts/sample.png"))
+	sc = SampleClass((29, 86, 6),(64, 255, 255))
+	result=sc.fun(cv2.imread("/home/dhruv/Desktop/ball tracking/sample.png"))
 	
 	cv2.imshow("Frame",result[0])
 	cv2.imshow("Mask",result[1])
 	print('center ',result[2])
 	print('radius ',result[3])
+	print(result[0].shape)
 	cv2.waitKey(0)
