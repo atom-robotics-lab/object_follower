@@ -22,6 +22,8 @@ class obj_follower:
     self.velocity_msg.linear.z = 0
     self.velocity_msg.angular.x = 0
     self.velocity_msg.angular.y = 0
+    self.radius_threshold=130
+    self.buffer=20
   
   def callback(self,data):
     try:
@@ -36,12 +38,20 @@ class obj_follower:
     sc = SampleClass()
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
-    if result[2][0]>(x_length/2+20):
-      self.move(1,-1)
-    elif result[2][0]<(x_length/2-20):
-      self.move(1,1)      
+    if(result[3]<=self.radius_threshold):
+      if result[2][0]>(x_length/2+self.buffer):
+        self.move(1,-1)
+      elif result[2][0]<(x_length/2-self.buffer):
+        self.move(1,1)      
+      else:
+        self.move(1,0)
     else:
-      self.move(1,0)
+      if result[2][0]>(x_length/2+20):
+        self.move(0,-1)
+      elif result[2][0]<(x_length/2-20):
+        self.move(0,1)      
+      else:
+       self.move(0,0)
 
   def move(self, linear, angular):
     self.velocity_msg.linear.x = linear
