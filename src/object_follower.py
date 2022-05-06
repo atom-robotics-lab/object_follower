@@ -18,7 +18,11 @@ class obj_follower:
     self.image_sub =rospy.Subscriber("/rrbot/camera1/image_raw",Image,self.callback)
     self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
     self.velocity_msg = Twist()
-    
+    self.velocity_msg.linear.y = 0
+    self.velocity_msg.linear.z = 0
+    self.velocity_msg.angular.x = 0
+    self.velocity_msg.angular.y = 0
+  
   def callback(self,data):
     try:
       self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
@@ -26,55 +30,24 @@ class obj_follower:
       
     except CvBridgeError as e:
       print(e)
+      self.move(0,0)
 
   def control_loop(self):
     sc = SampleClass()
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
     if result[2][0]>(x_length/2+20):
-      self.velocity_msg.linear.x = 1
-      self.velocity_msg.linear.y = 0
-      self.velocity_msg.linear.z = 0
-      self.velocity_msg.angular.x = 0
-      self.velocity_msg.y = 0
-      self.velocity_msg.angular.z = -1
-      self.pub.publish(self.velocity_msg)
-
+      self.move(1,-1)
     elif result[2][0]<(x_length/2-20):
-      self.velocity_msg.linear.x = 1
-      self.velocity_msg.linear.y = 0
-      self.velocity_msg.linear.z = 0
-      self.velocity_msg.angular.x = 0
-      self.velocity_msg.y = 0
-      self.velocity_msg.angular.z = 1
-      self.pub.publish(self.velocity_msg)
-      
+      self.move(1,1)      
     else:
-      self.velocity_msg.linear.x = 1
-      self.velocity_msg.linear.y = 0
-      self.velocity_msg.linear.z = 0
-      self.velocity_msg.angular.x = 0
-      self.velocity_msg.y = 0
-      self.velocity_msg.angular.z = 0
-      self.pub.publish(self.velocity_msg)
-
-
-    #print("control+loop")
-    #self.move(0.5,0)
+      self.move(1,0)
 
   def move(self, linear, angular):
-    print("move")
     self.velocity_msg.linear.x = linear
     self.velocity_msg.angular.z = angular
     self.pub.publish(self.velocity_msg)
     
-
-
-
-
-
-
-
 
 def main():
   rospy.init_node("Obj_follower",anonymous=True)
