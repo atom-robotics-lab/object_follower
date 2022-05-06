@@ -46,9 +46,9 @@ class obj_follower:
       else:
         self.move(1,0)
     else:
-      if result[2][0]>(x_length/2+20):
+      if result[2][0]>(x_length/2+self.buffer):
         self.move(0,-1)
-      elif result[2][0]<(x_length/2-20):
+      elif result[2][0]<(x_length/2-self.buffer):
         self.move(0,1)      
       else:
        self.move(0,0)
