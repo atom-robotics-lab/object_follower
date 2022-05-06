@@ -30,6 +30,7 @@ class obj_follower:
       
     except CvBridgeError as e:
       print(e)
+      self.move(0,0)
       
   def control_loop(self):
     sc = SampleClass()
