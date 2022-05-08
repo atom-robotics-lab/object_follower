@@ -42,37 +42,39 @@ class obj_follower:
     sc = SampleClass()
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
+    y=result[0].shape[0]
+    print(y)
     x =int(x_length/2)
-    cv2.line(result[1],(x,-255),(x,255),(255,0,0),2)
+    cv2.line(result[1],(x,0),(x,800),(255,0,0),2)
     if(result[3]<=self.radius_threshold):
       if result[2][0]>(x_length/2+self.buffer):
         self.move(1,-1)
-        cv2.putText(result[0],"Right",(x,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-        cv2.putText(result[0],"Go Forward",(x,-50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        cv2.putText(result[0],"Right",(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        cv2.putText(result[0],"Go Forward",(x-100,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
 
       elif result[2][0]<(x_length/2-self.buffer):
        self.move(1,1) 
-       cv2.putText(result[0],"Left",(x,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-       cv2.putText(result[0],"Go Forward",(x,-50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+       cv2.putText(result[0],"Left",(x-50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+       cv2.putText(result[0],"Go Forward",(x-100,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
       
       else:
         self.move(1,0)
-        cv2.putText(result[0],"Center",(x,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-        cv2.putText(result[0],"Go Forward",(x,-50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        cv2.putText(result[0],"Center",(x-75,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        cv2.putText(result[0],"Go Forward",(x-100,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
 
     else:
       if result[2][0]>(x_length/2+self.buffer):
         self.move(0,-1)
-        cv2.putText(result[0],"Right",(x,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        cv2.putText(result[0],"Right",(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
         
 
       elif result[2][0]<(x_length/2-self.buffer):
         self.move(0,1) 
-        cv2.putText(result[0],"Left",(x,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA) 
+        cv2.putText(result[0],"Left",(x-50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA) 
             
       else:
        self.move(0,0)
-       cv2.putText(result[0],"Stop",(x,-50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+       cv2.putText(result[0],"Stop",(x-50,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
     
     cv2.imshow("Frame",result[0])
     cv2.imshow("Mask",result[1])
