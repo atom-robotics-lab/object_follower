@@ -47,32 +47,32 @@ class obj_follower:
     if(result[3]<=self.radius_threshold):
       if result[2][0]>(x_length/2+self.buffer):
         self.move(1,-1)
-        cv2.putText(result[0],"Right",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
-        cv2.putText(result[0],"Go Forward",(-20,-200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+        cv2.putText(result[0],"Right",(-20,200),FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
+        cv2.putText(result[0],"Go Forward",(-20,-200),FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
 
       elif result[2][0]<(x_length/2-self.buffer):
        self.move(1,1) 
-       cv2.putText(result[0],"Left",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
-       cv2.putText(result[0],"Go Forward",(-20,-200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+       cv2.putText(result[0],"Left",(-20,200),FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
+       cv2.putText(result[0],"Go Forward",(-20,-200),FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
       
       else:
         self.move(1,0)
-        cv2.putText(result[0],"Center",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
-        cv2.putText(result[0],"Go Forward",(-20,-200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+        cv2.putText(result[0],"Center",(-20,200),FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
+        cv2.putText(result[0],"Go Forward",(-20,-200),FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
 
     else:
       if result[2][0]>(x_length/2+self.buffer):
         self.move(0,-1)
-        cv2.putText(result[0],"Right",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+        cv2.putText(result[0],"Right",(-20,200),FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
         
 
       elif result[2][0]<(x_length/2-self.buffer):
         self.move(0,1) 
-        cv2.putText(result[0],"Left",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2) 
+        cv2.putText(result[0],"Left",(-20,200),FONT_HERSHEY_SIMPLEX,1,(255,0,0),2) 
             
       else:
        self.move(0,0)
-       cv2.putText(result[0],"Stop",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+       cv2.putText(result[0],"Stop",(-20,200),FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)
     
     cv2.imshow("Frame",result[0])
     cv2.imshow("Mask",result[1])
