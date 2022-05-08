@@ -43,7 +43,7 @@ class obj_follower:
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
     y=result[0].shape[0]
-    print(y)
+    
     x =int(x_length/2)
     cv2.line(result[1],(x,0),(x,800),(255,0,0),2)
     if(result[3]<=self.radius_threshold):
