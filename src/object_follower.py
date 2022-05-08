@@ -12,6 +12,8 @@ import cv2
 from sensor_msgs.msg import Image
 
 
+
+
 class obj_follower:
   def __init__(self):
     self.bridge = CvBridge()
@@ -28,6 +30,8 @@ class obj_follower:
   def callback(self,data):
     try:
       self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+      #cv2.imshow("Frame",result[0])
+      #cv2.imshow("Mask",result[1])
       self.control_loop()      
       
     except CvBridgeError as e:
@@ -38,21 +42,41 @@ class obj_follower:
     sc = SampleClass()
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
+    x =int(x_length/2)
+    cv2.line(result[1],(x,255),(x,-255),(0,255,0),10)
     if(result[3]<=self.radius_threshold):
       if result[2][0]>(x_length/2+self.buffer):
         self.move(1,-1)
+        cv2.putText(result[0],"Right",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+        cv2.putText(result[0],"Go Forward",(-20,-200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+
       elif result[2][0]<(x_length/2-self.buffer):
-        self.move(1,1)      
+       self.move(1,1) 
+       cv2.putText(result[0],"Left",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+       cv2.putText(result[0],"Go Forward",(-20,-200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+      
       else:
         self.move(1,0)
+        cv2.putText(result[0],"Center",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+        cv2.putText(result[0],"Go Forward",(-20,-200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+
     else:
       if result[2][0]>(x_length/2+self.buffer):
         self.move(0,-1)
+        cv2.putText(result[0],"Right",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+        
+
       elif result[2][0]<(x_length/2-self.buffer):
-        self.move(0,1)      
+        self.move(0,1) 
+        cv2.putText(result[0],"Left",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2) 
+            
       else:
        self.move(0,0)
-
+       cv2.putText(result[0],"Stop",(-20,200),FONT_HERSHEY_SIMPLEX,(255,0,0),2)
+    
+    cv2.imshow("Frame",result[0])
+    cv2.imshow("Mask",result[1])
+    
   def move(self, linear, angular):
     self.velocity_msg.linear.x = linear
     self.velocity_msg.angular.z = angular
@@ -61,7 +85,8 @@ class obj_follower:
 
 def main():
   rospy.init_node("Obj_follower",anonymous=True)
-  of= obj_follower()
+  of=obj_follower()
+
   try:
     rospy.spin()
     
