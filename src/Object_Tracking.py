@@ -5,6 +5,8 @@ class SampleClass:
 	def __init__(self,lower=(29, 86, 6), upper=(64, 255, 255)):
 		self.lower = lower
 		self.upper = upper
+		self.radius = None
+		self.center = None
 
 
 	def fun(self,frame):
@@ -20,17 +22,18 @@ class SampleClass:
 		cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
 			cv2.CHAIN_APPROX_SIMPLE)
 		cnts = imutils.grab_contours(cnts)
-		center = None
 		if len(cnts) > 0:
 			c = max(cnts, key=cv2.contourArea)
-			((x, y), radius) = cv2.minEnclosingCircle(c)
+			((x, y), self.radius) = cv2.minEnclosingCircle(c)
 			M = cv2.moments(c)
-			center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-			if radius > 10:
-				cv2.circle(self.frame, (int(x), int(y)), int(radius),
+			self.center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+			if self.radius > 10:
+				cv2.circle(self.frame, (int(x), int(y)), int(self.radius),
 					(0, 255, 255), 2)
-				cv2.circle(frame, center, 5, (0, 0, 255), -1)
-		return [frame,mask,center,radius]
+				cv2.circle(frame, self.center, 5, (0, 0, 255), -1)
+		
+			
+		return [frame,mask,self.center,self.radius]
 
 
 		 
@@ -43,7 +46,6 @@ if __name__=="__main__":
 	cv2.imshow("Mask",result[1])
 	print('center ',result[2])
 	print('radius ',result[3])
-
 	print(result[0].shape)
 
 	cv2.waitKey(0)

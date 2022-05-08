@@ -38,21 +38,24 @@ class obj_follower:
     sc = SampleClass()
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
-    if(result[3]<=self.radius_threshold):
-      if result[2][0]>(x_length/2+self.buffer):
-        self.move(1,-1)
-      elif result[2][0]<(x_length/2-self.buffer):
-        self.move(1,1)      
+    if(result[3]== None and result[2]==None):
+      self.move(0,1)
+    else:  
+      if(result[3]<=self.radius_threshold):
+        if result[2][0]>(x_length/2+self.buffer):
+          self.move(1,-1)
+        elif result[2][0]<(x_length/2-self.buffer):
+          self.move(1,1)      
+        else:
+          self.move(1,0)
       else:
-        self.move(1,0)
-    else:
-      if result[2][0]>(x_length/2+self.buffer):
-        self.move(0,-1)
-      elif result[2][0]<(x_length/2-self.buffer):
-        self.move(0,1)      
-      else:
-       self.move(0,0)
-
+        if result[2][0]>(x_length/2+self.buffer):
+          self.move(0,-1)
+        elif result[2][0]<(x_length/2-self.buffer):
+          self.move(0,1)      
+        else:
+         self.move(0,0)
+  
   def move(self, linear, angular):
     self.velocity_msg.linear.x = linear
     self.velocity_msg.angular.z = angular
