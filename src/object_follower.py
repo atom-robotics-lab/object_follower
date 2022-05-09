@@ -2,10 +2,6 @@
 
 import rospy
 from geometry_msgs.msg import Twist
-#from Robot_State import Bot_State
-#from WaypointManager import WaypointManager
-#from OdomSubscriber import OdomSubscriber
-import numpy as np
 from Object_Tracking import SampleClass
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
@@ -25,7 +21,8 @@ class obj_follower:
     self.velocity_msg.angular.x = 0
     self.velocity_msg.angular.y = 0
     self.radius_threshold=130
-    self.buffer=20
+    self.buffer=30
+    self.p = 0.015
   
   def callback(self,data):
     try:
@@ -49,22 +46,24 @@ class obj_follower:
 
     
     if(result[3]== None and result[2]==None):
-      self.move(0,1)
+      self.move(0,0.5)
+      self.at = "Finding Object"
+      self.lt = "Stop"
     else:
       if(result[3]<=self.radius_threshold):
         if result[2][0]>(x_length/2+self.buffer):
-          self.move(1,-1)
+          self.move(self.p*(self.radius_threshold-result[3]),-1)
           self.at = "Right==>"
           self.lt = "Go Forward"
 
         elif result[2][0]<(x_length/2-self.buffer):
-          self.move(1,1) 
+          self.move(self.p*(self.radius_threshold-result[3]),1) 
           self.at = "<==Left"
           self.lt = "Go Forward"
 
 
         else:
-          self.move(1,0)
+          self.move(self.p*(self.radius_threshold-result[3]),0)
           self.at = "Center"
           self.lt = "Go Forward"
 
@@ -101,12 +100,10 @@ class obj_follower:
     self.velocity_msg.linear.x = linear
     self.velocity_msg.angular.z = angular
     self.pub.publish(self.velocity_msg)
-    
 
 def main():
   rospy.init_node("Obj_follower",anonymous=True)
   of=obj_follower()
-  #cv2.waitKey(1)
   try:
     rospy.spin()
     
