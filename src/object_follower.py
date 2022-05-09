@@ -48,40 +48,42 @@ class obj_follower:
     x =int(x_length/2)
 
     
-
-    if(result[3]<=self.radius_threshold):
-      if result[2][0]>(x_length/2+self.buffer):
-        self.move(1,-1)
-        self.at = "Right==>"
-        self.lt = "Go Forward"
-
-      elif result[2][0]<(x_length/2-self.buffer):
-        self.move(1,1) 
-        self.at = "<==Left"
-        self.lt = "Go Forward"
-       
-      
-      else:
-        self.move(1,0)
-        self.at = "Center"
-        self.lt = "Go Forward"
-
+    if(result[3]== None and result[2]==None):
+      self.move(0,1)
     else:
-      if result[2][0]>(x_length/2+self.buffer):
-        self.move(0,-1)
-        self.at = "Right==>"
-        self.lt = "Stop"
-        
+      if(result[3]<=self.radius_threshold):
+        if result[2][0]>(x_length/2+self.buffer):
+          self.move(1,-1)
+          self.at = "Right==>"
+          self.lt = "Go Forward"
 
-      elif result[2][0]<(x_length/2-self.buffer):
-        self.move(0,1) 
-        self.at = "<==Left"
-        self.lt = "Stop"
-            
+        elif result[2][0]<(x_length/2-self.buffer):
+          self.move(1,1) 
+          self.at = "<==Left"
+          self.lt = "Go Forward"
+
+
+        else:
+          self.move(1,0)
+          self.at = "Center"
+          self.lt = "Go Forward"
+
       else:
-        self.move(0,0)
-        self.at = "Center"
-        self.lt = "Stop"
+        if result[2][0]>(x_length/2+self.buffer):
+          self.move(0,-1)
+          self.at = "Right==>"
+          self.lt = "Stop"
+
+
+        elif result[2][0]<(x_length/2-self.buffer):
+          self.move(0,1) 
+          self.at = "<==Left"
+          self.lt = "Stop"
+
+        else:
+          self.move(0,0)
+          self.at = "Center"
+          self.lt = "Stop"
 
     cv2.putText(result[0],self.at,(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
     cv2.putText(result[0],self.lt,(x-70,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
