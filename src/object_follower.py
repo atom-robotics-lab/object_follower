@@ -43,42 +43,55 @@ class obj_follower:
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
 
-    y=result[0].shape[0]
+    
     
     x =int(x_length/2)
-    cv2.line(result[1],(x,0),(x,800),(255,0,0),2)
+
+    
+
     if(result[3]<=self.radius_threshold):
       if result[2][0]>(x_length/2+self.buffer):
         self.move(1,-1)
-        cv2.putText(result[0],"Right",(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-        cv2.putText(result[0],"Go Forward",(x-100,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        self.at = "Right==>"
+        self.lt = "Go Forward"
 
       elif result[2][0]<(x_length/2-self.buffer):
-       self.move(1,1) 
-       cv2.putText(result[0],"Left",(x-50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-       cv2.putText(result[0],"Go Forward",(x-100,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        self.move(1,1) 
+        self.at = "<==Left"
+        self.lt = "Go Forward"
+       
       
       else:
         self.move(1,0)
-        cv2.putText(result[0],"Center",(x-75,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-        cv2.putText(result[0],"Go Forward",(x-100,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        self.at = "Center"
+        self.lt = "Go Forward"
 
     else:
       if result[2][0]>(x_length/2+self.buffer):
         self.move(0,-1)
-        cv2.putText(result[0],"Right",(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        self.at = "Right==>"
+        self.lt = "Stop"
         
 
       elif result[2][0]<(x_length/2-self.buffer):
         self.move(0,1) 
-        cv2.putText(result[0],"Left",(x-50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA) 
+        self.at = "<==Left"
+        self.lt = "Stop"
             
       else:
-       self.move(0,0)
-       cv2.putText(result[0],"Stop",(x-50,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-    
+        self.move(0,0)
+        self.at = "Center"
+        self.lt = "Stop"
+
+    cv2.putText(result[0],self.at,(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+    cv2.putText(result[0],self.lt,(x-70,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        
     cv2.imshow("Frame",result[0])
-    cv2.imshow("Mask",result[1])
+    mask3=cv2.cvtColor(result[1],cv2.COLOR_GRAY2BGR)
+    im_thresh_color = cv2.bitwise_and(result[0],mask3)
+    cv2.line(im_thresh_color , (x,0),(x,800),(255,0,0),2)
+    cv2.imshow("Mask",im_thresh_color)
+    cv2.imshow("Mask",im_thresh_color)
     cv2.waitKey(1)
     
 
