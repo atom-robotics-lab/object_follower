@@ -42,6 +42,7 @@ class obj_follower:
     sc = SampleClass()
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
+
     y=result[0].shape[0]
     
     x =int(x_length/2)
@@ -80,6 +81,7 @@ class obj_follower:
     cv2.imshow("Mask",result[1])
     cv2.waitKey(1)
     
+
   def move(self, linear, angular):
     self.velocity_msg.linear.x = linear
     self.velocity_msg.angular.z = angular
