@@ -38,6 +38,7 @@ class obj_follower:
   def control_loop(self):
     sc = SampleClass()
     result=sc.fun(self.cv_image)
+    
     x_length=result[0].shape[0]
 
     
@@ -83,7 +84,9 @@ class obj_follower:
           self.move(0,0)
           self.at = "Center"
           self.lt = "Stop"
-      cv2.putText(result[1],"Area = "+str(3.14*result[3]*result[3]),(x-200,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+
+    cv2.putText(result[1],"Area = "+str(3.14*result[3]*result[3]),(x-200,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+
     cv2.putText(result[0],self.at,(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
     cv2.putText(result[0],self.lt,(x-70,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
         
@@ -92,7 +95,8 @@ class obj_follower:
     im_thresh_color = cv2.bitwise_and(result[0],mask3)
     cv2.line(im_thresh_color , (x,0),(x,800),(255,0,0),2)
     cv2.imshow("Mask",im_thresh_color)
-    cv2.imshow("Mask",im_thresh_color)
+    
+    #cv2.imshow("Mask",im_thresh_color)
     cv2.waitKey(1)
     
 
