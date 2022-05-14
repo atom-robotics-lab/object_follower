@@ -21,9 +21,9 @@ class obj_follower:
     self.velocity_msg.angular.x = 0
     self.velocity_msg.angular.y = 0
     self.radius_threshold=130
-    self.buffer=30
+    self.buffer=0
     self.pl = 0.015
-    self.pa = 0.015
+    self.pa = 0.003
   
   def callback(self,data):
     try:
@@ -51,12 +51,12 @@ class obj_follower:
       x_pos=result[2][0]
       if(result[3]<=self.radius_threshold):
         if result[2][0]>(x_length/2+self.buffer):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x_pos-x))
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos))
           self.at = "Right==>"
           self.lt = "Go Forward"
 
         elif result[2][0]<(x_length/2-self.buffer):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x_pos-x)) 
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos)) 
           self.at = "<==Left"
           self.lt = "Go Forward"
 
@@ -68,13 +68,13 @@ class obj_follower:
 
       else:
         if result[2][0]>(x_length/2+self.buffer):
-          self.move(0,-1)
+          self.move(0,self.pa*(x-x_pos))
           self.at = "Right==>"
           self.lt = "Stop"
 
 
         elif result[2][0]<(x_length/2-self.buffer):
-          self.move(0,1) 
+          self.move(0,self.pa*(x-x_pos)) 
           self.at = "<==Left"
           self.lt = "Stop"
 
