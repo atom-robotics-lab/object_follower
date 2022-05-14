@@ -22,7 +22,8 @@ class obj_follower:
     self.velocity_msg.angular.y = 0
     self.radius_threshold=130
     self.buffer=30
-    self.p = 0.015
+    self.pl = 0.015
+    self.pa = 0.015
   
   def callback(self,data):
     try:
@@ -38,33 +39,30 @@ class obj_follower:
   def control_loop(self):
     sc = SampleClass()
     result=sc.fun(self.cv_image)
-    
     x_length=result[0].shape[0]
-
-    
-    
+   
     x =int(x_length/2)
-
-    
+      
     if(result[3]== None and result[2]==None):
       self.move(0,0.5)
       self.at = "Finding Object"
       self.lt = "Stop"
     else:
+      x_pos=result[2][0]
       if(result[3]<=self.radius_threshold):
         if result[2][0]>(x_length/2+self.buffer):
-          self.move(self.p*(self.radius_threshold-result[3]),-1)
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x_pos-x))
           self.at = "Right==>"
           self.lt = "Go Forward"
 
         elif result[2][0]<(x_length/2-self.buffer):
-          self.move(self.p*(self.radius_threshold-result[3]),1) 
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x_pos-x)) 
           self.at = "<==Left"
           self.lt = "Go Forward"
 
 
         else:
-          self.move(self.p*(self.radius_threshold-result[3]),0)
+          self.move(self.pl*(self.radius_threshold-result[3]),0)
           self.at = "Center"
           self.lt = "Go Forward"
 
@@ -85,7 +83,7 @@ class obj_follower:
           self.at = "Center"
           self.lt = "Stop"
 
-    cv2.putText(result[1],"Area = "+str(3.14*result[3]*result[3]),(x-200,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+      cv2.putText(result[1],"Area = "+str(3.14*result[3]*result[3]),(x-200,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
 
     cv2.putText(result[0],self.at,(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
     cv2.putText(result[0],self.lt,(x-70,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
