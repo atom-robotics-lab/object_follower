@@ -23,4 +23,38 @@ We aim to further expand this project and make it a person-follower.
 
 Your can refer to [A.T.O.M's wiki](https://atom-robotics-lab.github.io/wiki/setup/virtualenv.html) for installation of the above mentioned packages and libraries.
 
+<br>
+
+## Clone the Object Follower package
+Now go ahead and clone this repository inside the "src" folder of the catkin workspace you just created.
+
+<br>
+
+## Make the package
+We'll need to "make" everything in our catkin workspace so that the ROS environment knows about our new package.  (This will also compile any necessary code in the package). Execute the given commands in your terminal.
+
+```bash
+cd ~/catkin_ws
+catkin_make
+```
+
+
+
+
+
+
+
+
+
+<br><br>
+
+
+
+
+
+
+
+BAZINGA!! The installation is done and now its time to play around with the robot :)
+
+
 
