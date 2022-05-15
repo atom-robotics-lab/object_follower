@@ -27,8 +27,6 @@ class obj_follower:
   def callback(self,data):
     try:
       self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
-      #cv2.imshow("Frame",result[0])
-      #cv2.imshow("Mask",result[1])
       self.control_loop()      
       
     except CvBridgeError as e:
@@ -39,6 +37,7 @@ class obj_follower:
     sc = SampleClass()
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
+
    
     x =int(x_length/2)
       
@@ -87,6 +86,7 @@ class obj_follower:
     cv2.putText(result[0],self.at,(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
     cv2.putText(result[0],self.lt,(x-70,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
         
+
     cv2.imshow("Frame",result[0])
     mask3=cv2.cvtColor(result[1],cv2.COLOR_GRAY2BGR)
     im_thresh_color = cv2.bitwise_and(result[0],mask3)
