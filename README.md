@@ -51,8 +51,9 @@ roslaunch obj_follower obj_follower_sim.launch
 ```
 The above command when executed in the terminal will launch the gazebo simulation and will also start roscore.
 
-![Simulation World]("https://github.com/atom-robotics-lab/obj_follower/blob/master/assets/Images/simulation.png")
 
+
+<img src = "https://github.com/atom-robotics-lab/obj_follower/blob/master/assets/Images/simulation2.png" >
 
 
 ## Run the node
@@ -63,7 +64,7 @@ rosrun obj_follower object_follower.py
 
 The given command will run the controller script which controls the robot's movements.
 
-![]("assets/GIF's/robot.gif")
+<img src = "https://github.com/atom-robotics-lab/obj_follower/blob/master/assets/GIF's/robot.gif" >
 
 
 
