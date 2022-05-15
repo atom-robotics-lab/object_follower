@@ -50,24 +50,24 @@ BAZINGA!! The installation is done and now its time to play around with the robo
 ## Launch
 
 ```bash
-roslaunch obj_follower obj_follower_sim.launch
+roslaunch object_follower obj_follower_sim.launch
 ```
 The above command when executed in the terminal will launch the gazebo simulation and will also start roscore.
 
 
 
-<img src = "https://github.com/atom-robotics-lab/obj_follower/blob/master/assets/Images/simulation2.png" >
+<img src = "https://github.com/atom-robotics-lab/object_follower/blob/master/assets/Images/simulation2.png" >
 
 
 ## Run the node
 
 ```bash
-rosrun obj_follower object_follower.py
+rosrun object_follower object_follower.py
 ```
 
 The given command will run the controller script which controls the robot's movements.
 
-<img src = "https://github.com/atom-robotics-lab/obj_follower/blob/master/assets/GIF's/robot.gif" >
+<img src = "https://github.com/atom-robotics-lab/object_follower/blob/master/assets/GIF's/robot.gif" >
 
 
 
