@@ -28,7 +28,7 @@ Your can refer to [A.T.O.M's wiki](https://atom-robotics-lab.github.io/wiki/setu
 ## Clone the Object Follower package
 Now go ahead and clone this repository inside the "src" folder of the catkin workspace you just created by executing the command given below in your terminal.
 ```bash
-git clone git@github.com:atom-robotics-lab/obj_follower.git
+git clone git@github.com:atom-robotics-lab/object_follower.git
 ```
 
 <br>
