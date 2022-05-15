@@ -39,22 +39,28 @@ catkin_make
 ```
 
 
-
-
-
-
-
-
-
 <br><br>
-
-
-
-
-
-
-
 BAZINGA!! The installation is done and now its time to play around with the robot :)
+
+
+
+## Launch
+
+```bash
+roslaunch obj_follower obj_follower_sim.launch
+```
+The above command when executed in the terminal will launch the gazebo simulation and will also start roscore.
+
+
+
+
+## Run the node
+
+```bash
+rosrun obj_follower object_follower.py
+```
+
+
 
 
 
