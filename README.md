@@ -1,6 +1,6 @@
 # Object Follower
 
-This project aims to make the robot follow a particular object while also keeping a minimum safe distance from it. We have also implemented a proportional controller for the linear velocity of the bot. 
+This project aims to make the robot follow a particular object while also keeping a minimum safe distance from it.
 
 The software stacks implemented in this project are ROS and Python. We also made use of OpenCV for the object detection part.
 
