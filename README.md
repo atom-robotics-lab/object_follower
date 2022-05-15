@@ -60,6 +60,7 @@ The above command when executed in the terminal will launch the gazebo simulatio
 rosrun obj_follower object_follower.py
 ```
 
+The given command will run the controller script which controls the robot's movements.
 
 
 
