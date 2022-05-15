@@ -56,7 +56,7 @@ The above command when executed in the terminal will launch the gazebo simulatio
 
 
 
-<img src = "https://github.com/atom-robotics-lab/object_follower/blob/master/assets/Images/simulation2.png" >
+<img src = "https://github.com/atom-robotics-lab/object_follower/blob/main/assets/Images/simulation.png" >
 
 
 ## Run the node
@@ -67,7 +67,7 @@ rosrun object_follower object_follower.py
 
 The given command will run the controller script which controls the robot's movements.
 
-<img src = "https://github.com/atom-robotics-lab/object_follower/blob/master/assets/GIF's/robot.gif" >
+<img src = "https://github.com/atom-robotics-lab/object_follower/blob/main/assets/GIF's/robot.gif" >
 
 
 
