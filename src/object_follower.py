@@ -2,7 +2,6 @@
 
 import rospy
 from geometry_msgs.msg import Twist
-import numpy as np
 from Object_Tracking import SampleClass
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
@@ -22,7 +21,8 @@ class obj_follower:
     self.velocity_msg.angular.x = 0
     self.velocity_msg.angular.y = 0
     self.radius_threshold=130
-    self.buffer=20
+    self.pl = 0.015
+    self.pa = 0.003
   
   def callback(self,data):
     try:
@@ -38,52 +38,70 @@ class obj_follower:
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
 
-    y=result[0].shape[0]
+   
     x =int(x_length/2)
-    cv2.line(result[1],(x,0),(x,800),(255,0,0),2)
+      
     if(result[3]== None and result[2]==None):
-      self.move(0,1)
-    else: 
+      self.move(0,0.5)
+      self.at = "Finding Object"
+      self.lt = "Stop"
+    else:
+      x_pos=result[2][0]
       if(result[3]<=self.radius_threshold):
-        if result[2][0]>(x_length/2+self.buffer):
-          self.move(1,-1)
-          cv2.putText(result[0],"Right",(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-          cv2.putText(result[0],"Go Forward",(x-100,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-  
-        elif result[2][0]<(x_length/2-self.buffer):
-         self.move(1,1) 
-         cv2.putText(result[0],"Left",(x-50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-         cv2.putText(result[0],"Go Forward",(x-100,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-        
+        if result[2][0]>(x_length/2):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos))
+          self.at = "Right==>"
+          self.lt = "Go Forward"
+
+        elif result[2][0]<(x_length/2):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos)) 
+          self.at = "<==Left"
+          self.lt = "Go Forward"
+
+
         else:
-          self.move(1,0)
-          cv2.putText(result[0],"Center",(x-75,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-          cv2.putText(result[0],"Go Forward",(x-100,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-  
+          self.move(self.pl*(self.radius_threshold-result[3]),0)
+          self.at = "Center"
+          self.lt = "Go Forward"
+
       else:
-        if result[2][0]>(x_length/2+self.buffer):
-          self.move(0,-1)
-          cv2.putText(result[0],"Right",(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-          
-  
-        elif result[2][0]<(x_length/2-self.buffer):
-          self.move(0,1) 
-          cv2.putText(result[0],"Left",(x-50,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA) 
-              
+        if result[2][0]>(x_length/2):
+          self.move(0,self.pa*(x-x_pos))
+          self.at = "Right==>"
+          self.lt = "Stop"
+
+
+        elif result[2][0]<(x_length/2):
+          self.move(0,self.pa*(x-x_pos)) 
+          self.at = "<==Left"
+          self.lt = "Stop"
+
         else:
-         self.move(0,0)
-         cv2.putText(result[0],"Stop",(x-50,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
-    
+          self.move(0,0)
+          self.at = "Center"
+          self.lt = "Stop"
+
+      cv2.putText(result[1],"Area = "+str(round(3.14*result[3]*result[3],2)),(x-140,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+
+    cv2.putText(result[0],self.at,(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+    cv2.putText(result[0],self.lt,(x-70,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
+        
+
     cv2.imshow("Frame",result[0])
-    cv2.imshow("Mask",result[1])
+    mask3=cv2.cvtColor(result[1],cv2.COLOR_GRAY2BGR)
+    im_thresh_color = cv2.bitwise_and(result[0],mask3)
+    cv2.line(im_thresh_color , (x,0),(x,800),(255,0,0),2)
+    cv2.imshow("Mask",im_thresh_color)
+    
+    #cv2.imshow("Mask",im_thresh_color)
     cv2.waitKey(1)
     
 
   def move(self, linear, angular):
+    linear = min(linear,2)
     self.velocity_msg.linear.x = linear
     self.velocity_msg.angular.z = angular
     self.pub.publish(self.velocity_msg)
-    
 
 def main():
   rospy.init_node("Obj_follower",anonymous=True)
