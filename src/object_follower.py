@@ -37,8 +37,6 @@ class obj_follower:
     sc = SampleClass()
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
-
-   
     x =int(x_length/2)
       
     if(result[3]== None and result[2]==None):
@@ -47,7 +45,7 @@ class obj_follower:
       self.lt = "Stop"
     else:
       x_pos=result[2][0]
-      if(result[3]<=self.radius_threshold):
+      if(result[3]<self.radius_threshold):
         if result[2][0]>(x_length/2):
           self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos))
           self.at = "Right==>"
@@ -58,11 +56,26 @@ class obj_follower:
           self.at = "<==Left"
           self.lt = "Go Forward"
 
-
         else:
           self.move(self.pl*(self.radius_threshold-result[3]),0)
           self.at = "Center"
           self.lt = "Go Forward"
+      
+      elif(result[3]>self.radius_threshold):
+        if result[2][0]>(x_length/2):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos))
+          self.at = "Right==>"
+          self.lt = "Go Backward"
+
+        elif result[2][0]<(x_length/2):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos)) 
+          self.at = "<==Left"
+          self.lt = "Go Backward"
+
+        else:
+          self.move(self.pl*(self.radius_threshold-result[3]),0)
+          self.at = "Center"
+          self.lt = "Go Backward"
 
       else:
         if result[2][0]>(x_length/2):
