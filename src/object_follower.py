@@ -24,7 +24,7 @@ class obj_follower:
     self.buffer = 20
     self.pl = 0.015
     self.pa = 0.003
-    self.ia=0
+    self.ia=0.000005
     self.frames=0
     self.sum_ae=0
 
@@ -56,50 +56,50 @@ class obj_follower:
       self.sum_ae+=ae
       #avg_ae=self.sum_ae/self.frames
       if(result[3]<self.radius_threshold):
-        if result[2][0]>(x_length/2 + self.buffer):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)
+        if result[2][0]>(x_length/2):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)          
           self.at = "Right==>"
           self.lt = "Go Forward"
 
-        elif result[2][0]<(x_length/2 + self.buffer):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae) 
+        elif result[2][0]<(x_length/2):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)          
           self.at = "<==Left"
           self.lt = "Go Forward"
 
         else:
-          self.move(self.pl*(self.radius_threshold-result[3]),0)
+          self.move(self.pl*(self.radius_threshold-result[3]),0)          
           self.at = "Center"
           self.lt = "Go Forward"
       
       elif(result[3]>self.radius_threshold):
-        if result[2][0]>(x_length/2 + self.buffer):
+        if result[2][0]>(x_length/2):          
           self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)
           self.at = "Right==>"
           self.lt = "Go Backward"
 
-        elif result[2][0]<(x_length/2 + self.buffer):
+        elif result[2][0]<(x_length/2):          
           self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae) 
           self.at = "<==Left"
           self.lt = "Go Backward"
 
-        else:
+        else:          
           self.move(self.pl*(self.radius_threshold-result[3]),0)
           self.at = "Center"
           self.lt = "Go Backward"
 
       else:
-        if result[2][0]>(x_length/2 + self.buffer):
+        if result[2][0]>(x_length/2):          
           self.move(0,self.pa*ae+self.ia*self.sum_ae)
           self.at = "Right==>"
           self.lt = "Stop"
 
 
-        elif result[2][0]<(x_length/2 + self.buffer):
+        elif result[2][0]<(x_length/2):          
           self.move(0,self.pa*ae+self.ia*self.sum_ae) 
           self.at = "<==Left"
           self.lt = "Stop"
 
-        else:
+        else:          
           self.move(0,0)
           self.at = "Center"
           self.lt = "Stop"
