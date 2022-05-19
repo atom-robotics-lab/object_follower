@@ -27,6 +27,7 @@ class obj_follower:
     self.ia=0.000005
     self.sum_ae=0
     self.abuffer=2
+    self.lbuffer=1
 
   def callback(self,data):
     try:
@@ -52,7 +53,7 @@ class obj_follower:
       x_pos=result[2][0]
       ae=x-x_pos
       self.sum_ae+=ae
-      if(result[3]<self.radius_threshold):
+      if(result[3]<self.radius_threshold-self.lbuffer):
         if result[2][0]>(x_length/2+self.abuffer):
           self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)          
           self.at = "Right==>"
@@ -68,7 +69,7 @@ class obj_follower:
           self.at = "Center"
           self.lt = "Go Forward"
       
-      elif(result[3]>self.radius_threshold):
+      elif(result[3]>self.radius_threshold+self.lbuffer):
         if result[2][0]>(x_length/2+self.abuffer):          
           self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)
           self.at = "Right==>"
