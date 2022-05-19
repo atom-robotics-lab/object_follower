@@ -46,63 +46,91 @@ class obj_follower:
 
     if(result[3]== None and result[2]==None):
       self.move(0,0.5)
+      self.frames=0
+    else:
+      x_pos=result[2][0]
+      ae=x-x_pos
+      self.sum_ae+=ae
+      if(result[3]<self.radius_threshold):
+        if result[2][0]>(x_length/2):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)
+
+        elif result[2][0]<(x_length/2):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae) 
+
+        else:
+          self.move(self.pl*(self.radius_threshold-result[3]),0)
+      
+      elif(result[3]>self.radius_threshold):
+        if result[2][0]>(x_length/2):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)
+
+        elif result[2][0]<(x_length/2):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae) 
+
+        else:
+          self.move(self.pl*(self.radius_threshold-result[3]),0)
+
+      else:
+        if result[2][0]>(x_length/2):
+          self.move(0,self.pa*ae+self.ia*self.sum_ae)
+
+
+        elif result[2][0]<(x_length/2):
+          self.move(0,self.pa*ae+self.ia*self.sum_ae) 
+        else:
+          self.move(0,0)
+
+
+
+
+    if(result[3]== None and result[2]==None):
       self.at = "Finding Object"
       self.lt = "Stop"
       self.frames=0
     else:
       x_pos=result[2][0]
-      #self.frames+=1
       ae=x-x_pos
       self.sum_ae+=ae
-      #avg_ae=self.sum_ae/self.frames
       if(result[3]<self.radius_threshold):
-        if result[2][0]>(x_length/2 + self.buffer):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)
+        if result[2][0]>(x_length/2 - self.buffer):
           self.at = "Right==>"
           self.lt = "Go Forward"
 
-        elif result[2][0]<(x_length/2 + self.buffer):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae) 
+        elif result[2][0]<(x_length/2 + self.buffer): 
           self.at = "<==Left"
           self.lt = "Go Forward"
 
         else:
-          self.move(self.pl*(self.radius_threshold-result[3]),0)
           self.at = "Center"
           self.lt = "Go Forward"
       
       elif(result[3]>self.radius_threshold):
-        if result[2][0]>(x_length/2 + self.buffer):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)
+        if result[2][0]>(x_length/2 - self.buffer):
           self.at = "Right==>"
           self.lt = "Go Backward"
 
         elif result[2][0]<(x_length/2 + self.buffer):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae) 
           self.at = "<==Left"
           self.lt = "Go Backward"
 
         else:
-          self.move(self.pl*(self.radius_threshold-result[3]),0)
           self.at = "Center"
           self.lt = "Go Backward"
 
       else:
-        if result[2][0]>(x_length/2 + self.buffer):
-          self.move(0,self.pa*ae+self.ia*self.sum_ae)
+        if result[2][0]>(x_length/2 - self.buffer):
           self.at = "Right==>"
           self.lt = "Stop"
 
 
-        elif result[2][0]<(x_length/2 + self.buffer):
-          self.move(0,self.pa*ae+self.ia*self.sum_ae) 
+        elif result[2][0]<(x_length/2 + self.buffer): 
           self.at = "<==Left"
           self.lt = "Stop"
 
         else:
-          self.move(0,0)
           self.at = "Center"
-          self.lt = "Stop"
+          self.lt = "Stop"          
 
       cv2.putText(result[1],"Area = "+str(round(3.14*result[3]*result[3],2)),(x-140,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
 
@@ -116,7 +144,6 @@ class obj_follower:
     cv2.line(im_thresh_color , (x,0),(x,800),(255,0,0),2)
     cv2.imshow("Mask",im_thresh_color)
     
-    #cv2.imshow("Mask",im_thresh_color)
     cv2.waitKey(1)
     
 
