@@ -21,9 +21,14 @@ class obj_follower:
     self.velocity_msg.angular.x = 0
     self.velocity_msg.angular.y = 0
     self.radius_threshold=130
+    self.buffer = 20
     self.pl = 0.015
     self.pa = 0.003
-  
+    self.ia=0.000005
+    self.sum_ae=0
+    self.abuffer=2
+    self.lbuffer=1
+
   def callback(self,data):
     try:
       self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
@@ -38,58 +43,61 @@ class obj_follower:
     result=sc.fun(self.cv_image)
     x_length=result[0].shape[0]
     x =int(x_length/2)
-      
+    
+
     if(result[3]== None and result[2]==None):
       self.move(0,0.5)
       self.at = "Finding Object"
       self.lt = "Stop"
     else:
       x_pos=result[2][0]
-      if(result[3]<self.radius_threshold):
-        if result[2][0]>(x_length/2):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos))
+      ae=x-x_pos
+      self.sum_ae+=ae
+      if(result[3]<self.radius_threshold-self.lbuffer):
+        if result[2][0]>(x_length/2+self.abuffer):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)          
           self.at = "Right==>"
           self.lt = "Go Forward"
 
-        elif result[2][0]<(x_length/2):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos)) 
+        elif result[2][0]<(x_length/2-self.abuffer):
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)          
           self.at = "<==Left"
           self.lt = "Go Forward"
 
         else:
-          self.move(self.pl*(self.radius_threshold-result[3]),0)
+          self.move(self.pl*(self.radius_threshold-result[3]),0)          
           self.at = "Center"
           self.lt = "Go Forward"
       
-      elif(result[3]>self.radius_threshold):
-        if result[2][0]>(x_length/2):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos))
+      elif(result[3]>self.radius_threshold+self.lbuffer):
+        if result[2][0]>(x_length/2+self.abuffer):          
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)
           self.at = "Right==>"
           self.lt = "Go Backward"
 
-        elif result[2][0]<(x_length/2):
-          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*(x-x_pos)) 
+        elif result[2][0]<(x_length/2-self.abuffer):          
+          self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae) 
           self.at = "<==Left"
           self.lt = "Go Backward"
 
-        else:
+        else:          
           self.move(self.pl*(self.radius_threshold-result[3]),0)
           self.at = "Center"
           self.lt = "Go Backward"
 
       else:
-        if result[2][0]>(x_length/2):
-          self.move(0,self.pa*(x-x_pos))
+        if result[2][0]>(x_length/2+self.abuffer):          
+          self.move(0,self.pa*ae+self.ia*self.sum_ae)
           self.at = "Right==>"
           self.lt = "Stop"
 
 
-        elif result[2][0]<(x_length/2):
-          self.move(0,self.pa*(x-x_pos)) 
+        elif result[2][0]<(x_length/2-self.abuffer):          
+          self.move(0,self.pa*ae+self.ia*self.sum_ae) 
           self.at = "<==Left"
           self.lt = "Stop"
 
-        else:
+        else:          
           self.move(0,0)
           self.at = "Center"
           self.lt = "Stop"

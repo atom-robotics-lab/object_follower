@@ -50,7 +50,7 @@ BAZINGA!! The installation is done and now its time to play around with the robo
 ## Launch
 
 ```bash
-roslaunch object_follower obj_follower_sim.launch
+roslaunch obj_follower obj_follower_sim.launch
 ```
 The above command when executed in the terminal will launch the gazebo simulation and will also start roscore.
 
@@ -62,7 +62,7 @@ The above command when executed in the terminal will launch the gazebo simulatio
 ## Run the node
 
 ```bash
-rosrun object_follower object_follower.py
+rosrun obj_follower object_follower.py
 ```
 
 The given command will run the controller script which controls the robot's movements.
