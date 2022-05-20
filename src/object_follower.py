@@ -28,6 +28,12 @@ class obj_follower:
     self.sum_ae=0
     self.abuffer=2
     self.lbuffer=1
+    self.theta_precision = rospy.get_param("object_follower_controller/theta_precision")
+    self.dist_precision = rospy.get_param("object_follower_controller/distance_precision")
+    self.P = rospy.get_param("object_follower_controller/pid/p")
+    self.D = rospy.get_param("object_follower_controller/pid/d")
+    self.I = rospy.get_param("object_follower_controller/pid/i")
+    self.state = Bot_State.IdleState.value
 
   def callback(self,data):
     try:
