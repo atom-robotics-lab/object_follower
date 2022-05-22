@@ -1,4 +1,7 @@
 object_follower_controller:
 theta_precision: 0.1
 distance_precision: 0.1
+pl: 0.015
+pa: 0.003
+ia: 0.000005
 pid: {p: 3, i: 0, d: 0}

@@ -22,9 +22,9 @@ class obj_follower:
     self.velocity_msg.angular.y = 0
     self.radius_threshold=130
     self.buffer = 20
-    self.pl = 0.015
-    self.pa = 0.003
-    self.ia=0.000005
+    self.pl = rospy.get_param("object_follower_controller/pl")
+    self.pa = rospy.get_param("object_follower_controller/pa")
+    self.ia= rospy.get_param("object_follower_controller/ia")
     self.sum_ae=0
     self.abuffer=2
     self.lbuffer=1
