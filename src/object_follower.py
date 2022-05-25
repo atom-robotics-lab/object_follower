@@ -2,7 +2,7 @@
 
 import rospy
 from geometry_msgs.msg import Twist
-from Object_Tracking import SampleClass
+from Object_Tracking import ImageProcessing
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
 from sensor_msgs.msg import Image
@@ -39,14 +39,14 @@ class obj_follower:
       self.move(0,0)
       
   def control_loop(self):
-    sc = SampleClass()
-    result=sc.fun(self.cv_image)
+    sc = ImageProcessing()
+    result=sc.process_image(self.cv_image)
     x_length=result[0].shape[0]
     x =int(x_length/2)
     
 
     if(result[3]== None and result[2]==None):
-      self.move(0,0.5)
+      self.move(0,-0.5)
       self.at = "Finding Object"
       self.lt = "Stop"
     else:
