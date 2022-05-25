@@ -12,7 +12,7 @@ We aim to further expand this project and make it a person-follower.
 # Installation
 
 ## Pre-Requisites :
-- ROS noetic : Refer to the [official doceumentation](http://wiki.ros.org/noetic/Installation/Ubuntu) for installation of ROS noetic.
+- ROS noetic : Refer to the [official documentation](http://wiki.ros.org/noetic/Installation/Ubuntu) for installation of ROS noetic.
                
 - Catkin workspace : A catkin workspace is a folder where you modify, build, and. install catkin packages. Take a look ak the [official documentation](http://wiki.ros.org/catkin/Tutorials/create_a_workspace) for instructions regarding creation of a catkin workspace
 
