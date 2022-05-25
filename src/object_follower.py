@@ -28,13 +28,7 @@ class obj_follower:
     self.sum_ae=rospy.get_param("object_follower_controller/sum_ae")
     self.abuffer=rospy.get_param("object_follower_controller/abuffer")
     self.lbuffer=rospy.get_param("object_follower_controller/lbuffer")
-    self.theta_precision = rospy.get_param("object_follower_controller/theta_precision")
-    self.dist_precision = rospy.get_param("object_follower_controller/distance_precision")
-    self.P = rospy.get_param("object_follower_controller/pid/p")
-    self.D = rospy.get_param("object_follower_controller/pid/d")
-    self.I = rospy.get_param("object_follower_controller/pid/i")
-    self.state = Bot_State.IdleState.value
-
+    
   def callback(self,data):
     try:
       self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
