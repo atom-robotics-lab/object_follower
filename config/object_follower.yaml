@@ -4,4 +4,9 @@ distance_precision: 0.1
 pl: 0.015
 pa: 0.003
 ia: 0.000005
-pid: {p: 3, i: 0, d: 0}
+radius_threshold = 130
+buffer = 20
+sum_ae = 0
+self.abuffer = 2
+self.lbuffer = 1
+

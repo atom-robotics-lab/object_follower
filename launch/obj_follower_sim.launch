@@ -18,7 +18,7 @@
         <arg name="headless" value="false"/>
         <arg name="debug" value="false"/>
     </include>
-
+<include file ="$(find object_follower/config/object_follower.yaml" command = "load" />
 </launch>
 
 
