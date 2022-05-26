@@ -16,19 +16,22 @@ class obj_follower:
     self.image_sub =rospy.Subscriber("/rrbot/camera1/image_raw",Image,self.callback)
     self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
     self.velocity_msg = Twist()
+
     self.velocity_msg.linear.y = 0
     self.velocity_msg.linear.z = 0
     self.velocity_msg.angular.x = 0
     self.velocity_msg.angular.y = 0
-    self.radius_threshold=130
-    self.buffer = 20
-    self.pl = 0.015
-    self.pa = 0.003
-    self.ia=0.000005
-    self.sum_ae=0
-    self.abuffer=2
-    self.lbuffer=1
 
+    self.radius_threshold= rospy.get_param("object_follower_controller/radius_threshold")
+    self.buffer = rospy.get_param("object_follower_controller/buffer")
+    self.pl = rospy.get_param("object_follower_controller/pl")
+    self.pa = rospy.get_param("object_follower_controller/pa")
+    self.ia= rospy.get_param("object_follower_controller/ia")
+    self.abuffer=rospy.get_param("object_follower_controller/abuffer")
+    self.lbuffer=rospy.get_param("object_follower_controller/lbuffer")
+
+    self.sum_ae= 0
+    
   def callback(self,data):
     try:
       self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
