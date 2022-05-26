@@ -10,7 +10,7 @@ from sensor_msgs.msg import Image
 
 
 
-class obj_follower:
+class ObjectFollower:
   def __init__(self):
     self.bridge = CvBridge()
     self.image_sub =rospy.Subscriber("/rrbot/camera1/image_raw",Image,self.callback)
@@ -129,7 +129,7 @@ class obj_follower:
 
 def main():
   rospy.init_node("Obj_follower",anonymous=True)
-  of=obj_follower()
+  of = ObjectFollower()
   try:
     rospy.spin()
     
