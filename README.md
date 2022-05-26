@@ -34,15 +34,16 @@ git clone git@github.com:atom-robotics-lab/object_follower.git
 <br>
 
 ## Clone the MR-Robot package
-Now go ahead and clone this repository inside the "src" folder of the catkin workspace you just created by executing the command given below in your terminal.
+this package provide us the bot which we are gonig to use.
+Go inside the "src" folder of the catkin workspace and executing the command given below in your terminal.
 ```bash
 git clone git@github.com:atom-robotics-lab/MR-Robot.git
 ```
 
 <br>
 
-## Now out robote doesnot have camera in this package so we have to chang branch from main to with_camera   
-Now go inside the "src" folder of the catkin workspace then go inside MR-Robot package you just created by executing the above command then executing the command given below in your terminal.
+Now out robot does not have camera in this package so we have to chang branch from main to with_camera.   
+Now then go inside MR-Robot package you just created by executing the above command then executing the command given below in your terminal.
 ```bash
 git checkout with_camera 
 ```
