@@ -33,6 +33,22 @@ git clone git@github.com:atom-robotics-lab/object_follower.git
 
 <br>
 
+## Clone the MR-Robot package
+Now go ahead and clone this repository inside the "src" folder of the catkin workspace you just created by executing the command given below in your terminal.
+```bash
+git clone git@github.com:atom-robotics-lab/MR-Robot.git
+```
+
+<br>
+
+## Now out robote doesnot have camera in this package so we have to chang branch from main to with_camera   
+Now go inside the "src" folder of the catkin workspace then go inside MR-Robot package you just created by executing the above command then executing the command given below in your terminal.
+```bash
+git checkout with_camera 
+```
+
+<br>
+
 ## Make the package
 We'll need to "make" everything in our catkin workspace so that the ROS environment knows about our new package.  (This will also compile any necessary code in the package). Execute the given commands in your terminal.
 
