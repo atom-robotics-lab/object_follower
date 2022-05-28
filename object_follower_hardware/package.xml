@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>obj_follower</name>
+  <name>object_follower_hardware</name>
   <version>0.0.0</version>
-  <description>The obj_follower package</description>
+  <description>The object_follower_hardware package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
