@@ -12,7 +12,7 @@ from sensor_msgs.msg import Image
 # Create a class for object follower
 class ObjectFollower:
   def __init__(self):
-    self.bridge = CvBridge()
+    self.bridge = CvBridge() # Creating an Instance of CV Bridge
     self.image_sub =rospy.Subscriber("/rrbot/camera1/image_raw",Image,self.callback) # Subsciber for the Image feed
     self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)                     # Publisher to publish the velocities
     self.velocity_msg = Twist()  # Creating a messgae from the Twist template  
@@ -43,16 +43,16 @@ class ObjectFollower:
       
   def control_loop(self):
     sc = ImageProcessing() # Creating an object of the class Image processing to process the incoming image
-    result=sc.process_image(self.cv_image)
+    result=sc.process_image(self.cv_image) # process Image to detect object in the image
     x_length=result[0].shape[0]
     x =int(x_length/2)    # Center of the image
     
 
-    if(result[3]== None and result[2]==None):
+    if(result[3]== None and result[2]==None): # No object found
       self.move(0,-0.5)
       self.at = "Finding Object"
       self.lt = "Stop"
-    else:
+    else:  # Object had been detected in the Image feed
       x_pos=result[2][0]
       ae=x-x_pos        # Calculating the Error
       self.sum_ae+=ae   # Adding the error
@@ -131,7 +131,7 @@ class ObjectFollower:
 
 def main():
   rospy.init_node("Obj_follower",anonymous=True) # Initialising the node Obj_follower
-  of = ObjectFollower()
+  of = ObjectFollower()   # Create an object of the ObjectFollower Class
   try:
     rospy.spin()
     
