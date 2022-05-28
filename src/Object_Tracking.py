@@ -3,16 +3,15 @@ import imutils
 
 class ImageProcessing:
 	def __init__(self,lower=(29, 86, 6), upper=(64, 255, 255)):
-		self.lower = lower
-		self.upper = upper
-		self.radius = None
-		self.center = None
+		self.lower = lower  # The lower limit of the colour range in the form of RGB Values
+		self.upper = upper  # The Upper limit of the colour range in the form of RGB Values
+		self.radius = None  # The radius of the Circle drawn around the object
+		self.center = None  # The center of the circle drawn around the object
 
 
 	def process_image(self,frame):
-		self.frame=frame	
+		self.frame=frame
 		
-
 		blurred = cv2.GaussianBlur(self.frame, (11, 11), 0)
 
 		hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -44,7 +43,7 @@ class ImageProcessing:
 
 		 
 if __name__=="__main__":
-	sc = SampleClass((29, 86, 6),(64, 255, 255))
+	sc = ImageProcessing((29, 86, 6),(64, 255, 255))
 	result=sc.fun(cv2.imread("/home/dhruv/Desktop/ball tracking/sample.png"))
 
 	
