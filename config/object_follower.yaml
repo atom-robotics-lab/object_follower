@@ -5,7 +5,6 @@ object_follower_controller:
   pa: 0.003
   ia: 0.000005
   radius_threshold : 130
-  buffer : 20
   sum_ae : 0
   abuffer : 2
   lbuffer : 1
