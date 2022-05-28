@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 
+# Import all the nessecary packages
 import rospy
 from geometry_msgs.msg import Twist
 from Object_Tracking import ImageProcessing
@@ -8,33 +9,32 @@ import cv2
 from sensor_msgs.msg import Image
 
 
-
-
+# Create a class for object follower
 class ObjectFollower:
   def __init__(self):
     self.bridge = CvBridge()
-    self.image_sub =rospy.Subscriber("/rrbot/camera1/image_raw",Image,self.callback)
-    self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
-    self.velocity_msg = Twist()
-
+    self.image_sub =rospy.Subscriber("/rrbot/camera1/image_raw",Image,self.callback) # Subsciber for the Image feed
+    self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)                     # Publisher to publish the velocities
+    self.velocity_msg = Twist()  # Creating a messgae from the Twist template  
+    
+    # Setting the non required velocities to zero
     self.velocity_msg.linear.y = 0
     self.velocity_msg.linear.z = 0
     self.velocity_msg.angular.x = 0
     self.velocity_msg.angular.y = 0
 
-    self.radius_threshold= rospy.get_param("object_follower_controller/radius_threshold")
-    self.buffer = rospy.get_param("object_follower_controller/buffer")
-    self.pl = rospy.get_param("object_follower_controller/pl")
-    self.pa = rospy.get_param("object_follower_controller/pa")
-    self.ia= rospy.get_param("object_follower_controller/ia")
-    self.abuffer=rospy.get_param("object_follower_controller/abuffer")
-    self.lbuffer=rospy.get_param("object_follower_controller/lbuffer")
+    self.radius_threshold= rospy.get_param("object_follower_controller/radius_threshold") # The threshold radius of the circle to stop the Robot
+    self.pl = rospy.get_param("object_follower_controller/pl")                            # linear propotional constant
+    self.pa = rospy.get_param("object_follower_controller/pa")                            # Angular propotional constant
+    self.ia= rospy.get_param("object_follower_controller/ia")                             # Angular Integral constant
+    self.abuffer=rospy.get_param("object_follower_controller/abuffer")                    # Angular Buffer
+    self.lbuffer=rospy.get_param("object_follower_controller/lbuffer")                    # Linear Buffer
 
-    self.sum_ae= 0
+    self.sum_ae= 0     # Sum of the error
     
   def callback(self,data):
     try:
-      self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+      self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")   # Converting Image to CV2 comatible datatype
       self.control_loop()      
       
     except CvBridgeError as e:
@@ -42,10 +42,10 @@ class ObjectFollower:
       self.move(0,0)
       
   def control_loop(self):
-    sc = ImageProcessing()
+    sc = ImageProcessing() # Creating an object of the class Image processing to process the incoming image
     result=sc.process_image(self.cv_image)
     x_length=result[0].shape[0]
-    x =int(x_length/2)
+    x =int(x_length/2)    # Center of the image
     
 
     if(result[3]== None and result[2]==None):
@@ -54,63 +54,64 @@ class ObjectFollower:
       self.lt = "Stop"
     else:
       x_pos=result[2][0]
-      ae=x-x_pos
-      self.sum_ae+=ae
-      if(result[3]<self.radius_threshold-self.lbuffer):
-        if result[2][0]>(x_length/2+self.abuffer):
+      ae=x-x_pos        # Calculating the Error
+      self.sum_ae+=ae   # Adding the error
+      if(result[3]<self.radius_threshold-self.lbuffer): # Object is farther than the threshold
+        if result[2][0]>(x_length/2+self.abuffer): # Object is Towards Right
           self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)          
           self.at = "Right==>"
           self.lt = "Go Forward"
 
-        elif result[2][0]<(x_length/2-self.abuffer):
+        elif result[2][0]<(x_length/2-self.abuffer): # Object is Towards Left
           self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)          
           self.at = "<==Left"
           self.lt = "Go Forward"
 
-        else:
+        else:   # Object is in Center
           self.move(self.pl*(self.radius_threshold-result[3]),0)          
           self.at = "Center"
           self.lt = "Go Forward"
       
-      elif(result[3]>self.radius_threshold+self.lbuffer):
-        if result[2][0]>(x_length/2+self.abuffer):          
+      elif(result[3]>self.radius_threshold+self.lbuffer): # Object is Nearer than the threshold
+        if result[2][0]>(x_length/2+self.abuffer): # Object is Towards Right
           self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae)
           self.at = "Right==>"
           self.lt = "Go Backward"
 
-        elif result[2][0]<(x_length/2-self.abuffer):          
+        elif result[2][0]<(x_length/2-self.abuffer): # Object is Towards Left         
           self.move(self.pl*(self.radius_threshold-result[3]),self.pa*ae + self.ia*self.sum_ae) 
           self.at = "<==Left"
           self.lt = "Go Backward"
 
-        else:          
+        else:  # Object is in Center
           self.move(self.pl*(self.radius_threshold-result[3]),0)
           self.at = "Center"
           self.lt = "Go Backward"
 
-      else:
-        if result[2][0]>(x_length/2+self.abuffer):          
+      else:  # Object is at the correct Distance
+        if result[2][0]>(x_length/2+self.abuffer): # Object is Towards Right    
           self.move(0,self.pa*ae+self.ia*self.sum_ae)
           self.at = "Right==>"
           self.lt = "Stop"
 
 
-        elif result[2][0]<(x_length/2-self.abuffer):          
+        elif result[2][0]<(x_length/2-self.abuffer): # Object is Towards Left       
           self.move(0,self.pa*ae+self.ia*self.sum_ae) 
           self.at = "<==Left"
           self.lt = "Stop"
 
-        else:          
+        else: # Object is in Center         
           self.move(0,0)
           self.at = "Center"
           self.lt = "Stop"
 
       cv2.putText(result[1],"Area = "+str(round(3.14*result[3]*result[3],2)),(x-140,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
 
+    # Adding the Text to the frame
     cv2.putText(result[0],self.at,(x-60,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
     cv2.putText(result[0],self.lt,(x-70,750),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2,cv2.LINE_AA)
         
-
+    #Showing the Original Frame and the Masked Frame
     cv2.imshow("Frame",result[0])
     mask3=cv2.cvtColor(result[1],cv2.COLOR_GRAY2BGR)
     im_thresh_color = cv2.bitwise_and(result[0],mask3)
@@ -121,14 +122,15 @@ class ObjectFollower:
     cv2.waitKey(1)
     
 
+  # Creating a function move that will publish the required velocities
   def move(self, linear, angular):
-    linear = min(linear,2)
+    linear = min(linear,2) # Creating a maximum limit for the linear velocity
     self.velocity_msg.linear.x = linear
     self.velocity_msg.angular.z = angular
-    self.pub.publish(self.velocity_msg)
+    self.pub.publish(self.velocity_msg)  # Publish the velocities to the topic
 
 def main():
-  rospy.init_node("Obj_follower",anonymous=True)
+  rospy.init_node("Obj_follower",anonymous=True) # Initialising the node Obj_follower
   of = ObjectFollower()
   try:
     rospy.spin()
