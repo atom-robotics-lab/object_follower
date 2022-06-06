@@ -69,7 +69,7 @@ BAZINGA!! The installation is done and now its time to play around with the robo
 ```bash
 roslaunch obj_follower obj_follower_sim.launch
 ```
-The above command when executed in the terminal will launch the gazebo simulation and will also start roscore.
+The above command when executed in the terminal will launch the gazebo simulation and will also start ROS Master.
 
 
 
