@@ -22,6 +22,9 @@ class CameraPublisher:
             if ret == True:
               #rospy.loginfo('publishing video frame')
               self.pub.publish(self.br.cv2_to_imgmsg(frame, "bgr8"))
+              cv2.imshow('Frame',frame)
+              if  cv2.waitKey(1) & 0xFF == ord("q"):
+                break
 
             self.rate.sleep()
 
