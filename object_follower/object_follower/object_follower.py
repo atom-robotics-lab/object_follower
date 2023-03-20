@@ -3,7 +3,7 @@
 # Import all the nessecary packages
 import rclpy
 from geometry_msgs.msg import Twist
-from Object_Tracking import ImageProcessing
+from object_follower.ImageProcessing import ImageProcessing
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
 from sensor_msgs.msg import Image
