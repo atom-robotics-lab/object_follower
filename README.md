@@ -73,7 +73,7 @@ The above command when executed in the terminal will launch the gazebo simulatio
 
 
 
-<img src = "https://github.com/atom-robotics-lab/object_follower/blob/main/assets/Images/simulation.png" >
+<img src = "assets/Images/simulation.png" >
 
 
 ## Run the node
