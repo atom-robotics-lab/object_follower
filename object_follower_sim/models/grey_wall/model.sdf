@@ -18,13 +18,16 @@
             <size>7.5 0.2 2.8</size>
           </box>
         </geometry>
-        <material>
-          <script>
-            <uri>model://grey_wall/materials/scripts</uri>
-            <uri>model://grey_wall/materials/textures</uri>
-            <name>vrc/grey_wall</name>
-          </script>
-        </material>
+          <material>
+	          <diffuse>1.0 1.0 1.0</diffuse>
+            <specular>1.0 1.0 1.0</specular>
+            <ambient>1.0 1.0 1.0</ambient>
+	          <pbr>
+	           <metal>
+	             <albedo_map>model://grey_wall/materials/textures/grey_wall.png</albedo_map>
+	           </metal>
+	          </pbr>
+          </material>
       </visual>
     </link>
   </model>
