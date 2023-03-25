@@ -30,6 +30,22 @@ install(
 	DESTINATION
 	share/${PROJECT_NAME}/
 )
+install(
+  DIRECTORY
+    models/
+  DESTINATION share/${PROJECT_NAME}/models
+)
+
+install(
+  DIRECTORY
+    worlds/
+  DESTINATION share/${PROJECT_NAME}/worlds
+)
+install(
+  DIRECTORY
+    launch/
+  DESTINATION share/${PROJECT_NAME}/launch
+)
 
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env_hooks/${PROJECT_NAME}.sh.in")
 
