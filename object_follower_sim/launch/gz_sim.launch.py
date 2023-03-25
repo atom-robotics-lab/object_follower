@@ -34,13 +34,7 @@ def generate_launch_description():
         output='screen',
     )
 
-    world = DeclareLaunchArgument(
-            'world',
-            default_value=[os.path.join(pkg_object_follower_sim, 'worlds', 'four_wall.sdf'), ''],
-            description='SDF world file',
-        )
     return LaunchDescription([
         gazebo,
         #spawn_entity_node,
-        world
     ])
