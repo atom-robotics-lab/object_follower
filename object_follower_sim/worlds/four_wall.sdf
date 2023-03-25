@@ -328,7 +328,7 @@
         </inertial>
         <enable_wind>false</enable_wind>
       </link>
-      <pose>6.3276057243347177 2.3685169219970708 0 0 0 -1.5653901063495692</pose>
+      <pose>6.3276057243347177 2.3685169219970708 0 0 0 -1.5653901063495697</pose>
       <self_collide>false</self_collide>
     </model>
     <model name='grey_wall_4'>
@@ -491,7 +491,7 @@
       <self_collide>false</self_collide>
     </model>
     <model name='box'>
-      <pose>-0.60566058728806738 -0.081135862176859419 0.49999999990199806 6.2287739151293738e-22 9.3279666454713669e-22 -3.6315533669320137e-22</pose>
+      <pose>4.7599363327026367 -0.08113589882850647 0.5 6.228769976978208e-22 9.3279699610216593e-22 -3.6315500810484947e-22</pose>
       <link name='box_link'>
         <inertial>
           <inertia>

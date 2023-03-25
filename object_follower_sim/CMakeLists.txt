@@ -27,6 +27,8 @@ install(
 	DIRECTORY
 	launch
 	models
+  urdf
+  gazebo
 	DESTINATION
 	share/${PROJECT_NAME}/
 )
@@ -45,6 +47,25 @@ install(
   DIRECTORY
     launch/
   DESTINATION share/${PROJECT_NAME}/launch
+)
+
+install(
+  DIRECTORY
+    urdf/
+  DESTINATION share/${PROJECT_NAME}/urdf
+)
+
+install(
+  DIRECTORY
+    gazebo/
+  DESTINATION share/${PROJECT_NAME}/gazebo
+)
+
+
+install(
+  PROGRAMS
+  launch/gz_sim.launch.py
+  DESTINATION lib/${PROJECT_NAME}
 )
 
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/env_hooks/${PROJECT_NAME}.sh.in")
