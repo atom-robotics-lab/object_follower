@@ -19,11 +19,11 @@ def generate_launch_description():
                     os.path.join(pkg_ros_gz_sim, "launch", "gz_sim.launch.py")
                 ),
                 launch_arguments={
-                    'gz_args' : PathJoinSubstitution([
+                    'gz_args' : os.path.join(
                         pkg_object_follower_sim,
                         'worlds',
                         'four_wall.sdf'
-                    ])
+                    )
                 }.items()          
             )
     
