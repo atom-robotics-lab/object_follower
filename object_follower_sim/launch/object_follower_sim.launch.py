@@ -2,10 +2,11 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 def generate_launch_description():
@@ -23,18 +24,16 @@ def generate_launch_description():
                         'worlds',
                         'four_wall.sdf'
                     ])
-                }.items(),  
-            )                 
-
-
-    spawn_entity_node = Node(
-        package='ignition_gazebo',
-        executable='spawn_entity.py',
-        arguments=['-entity', "MR ROBOT", '-x', '0', '-y', '0', '-z', '1', '-file', os.path.join(pkg_object_follower_sim, "urdf", "mr_robot.urdf")],
-        output='screen',
-    )
+                }.items()          
+            )
+    
+    robot = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(pkg_object_follower_sim, "launch", "mr_robot.launch.py")
+                )   
+            )
 
     return LaunchDescription([
         gazebo,
-        #spawn_entity_node,
+        robot
     ])
