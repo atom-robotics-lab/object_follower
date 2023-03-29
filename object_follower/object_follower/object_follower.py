@@ -8,28 +8,31 @@ from cv_bridge import CvBridge, CvBridgeError
 import cv2
 from sensor_msgs.msg import Image
 
+object_follower_node = None
+
 
 # Create a class for object follower.value
 class ObjectFollower:
   def __init__(self):
     self.bridge = CvBridge() # Creating an Instance of CV Bridge
-    self.image_sub = self.node.create_subscription(Image, "/rrbot/camera1/image_raw",self.callback) # Subsciber for the Image feed
-    self.pub = self.node.create_publisher(Twist, '/cmd_vel', queue_size=10)                     # Publisher to publish the velocities
+    object_follower_node = rclpy.create_node("Object_Follower")
+    self.image_sub = object_follower_node.create_subscription(Image, "/rrbot/camera1/image_raw",self.callback, 1) # Subsciber for the Image feed
+    self.pub = object_follower_node.create_publisher(Twist, '/cmd_vel', 10)                     # Publisher to publish the velocities
     self.velocity_msg = Twist()  # Creating a messgae from the Twist template  
-    self.node = rclpy.create_node("Object_Follower")
+    
     
     # Setting the non required velocities to zero
-    self.velocity_msg.linear.y = 0
-    self.velocity_msg.linear.z = 0
-    self.velocity_msg.angular.x = 0
-    self.velocity_msg.angular.y = 0
+    self.velocity_msg.linear.y = 0.0
+    self.velocity_msg.linear.z = 0.0
+    self.velocity_msg.angular.x = 0.0
+    self.velocity_msg.angular.y = 0.0
 
-    self.radius_threshold= self.node.declare_parameter("object_follower_controller/radius_threshold").value # The threshold radius of the circle to stop the Robot
-    self.pl = self.node.declare_parameter("object_follower_controller/pl").value                            # linear propotional constant
-    self.pa = self.node.declare_parameter("object_follower_controller/pa").value                            # Angular propotional constant
-    self.ia= self.node.declare_parameter("object_follower_controller/ia").value                             # Angular Integral constant
-    self.abuffer = self.node.declare_parameter("object_follower_controller/abuffer").value                    # Angular Buffer
-    self.lbuffer = self.node.declare_parameter("object_follower_controller/lbuffer").value                    # Linear Buffer
+    self.radius_threshold= object_follower_node.declare_parameter("object_follower_controller/radius_threshold").value # The threshold radius of the circle to stop the Robot
+    self.pl = object_follower_node.declare_parameter("object_follower_controller/pl").value                            # linear propotional constant
+    self.pa = object_follower_node.declare_parameter("object_follower_controller/pa").value                            # Angular propotional constant
+    self.ia= object_follower_node.declare_parameter("object_follower_controller/ia").value                             # Angular Integral constant
+    self.abuffer = object_follower_node.declare_parameter("object_follower_controller/abuffer").value                    # Angular Buffer
+    self.lbuffer = object_follower_node.declare_parameter("object_follower_controller/lbuffer").value                    # Linear Buffer
 
     self.sum_ae= 0     # Sum of the error
     
@@ -132,19 +135,20 @@ class ObjectFollower:
 
 def main():
   rclpy.init()
-  node = rclpy.create_node("Object_Follower")
+  object_follower_node = rclpy.create_node("Object_Follower")
   of = ObjectFollower()   # Create an object of the ObjectFollower Class
   
   try:
-    rclpy.spin()
+    rclpy.spin(object_follower_node)
     
-  except:
-    print("error")
+  except Exception as e:
+
+    print(e)
 
 
   cv2.destroyAllWindows()
 
 
-main()
+#main()
 
 	
