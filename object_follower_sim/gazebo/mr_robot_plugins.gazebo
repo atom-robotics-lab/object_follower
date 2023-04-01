@@ -3,79 +3,57 @@
 
 
 	<gazebo>
-		<plugin filename="libgazebo_ros_diff_drive.so" name="diff_drive">
-			<!-- Set control loop update rate -->
-			<updateRate>100</updateRate>
-				
-			<!-- Name of left joint, defaults to `left_joint` -->
-			<leftJoint>left_motor_joint</leftJoint>
-
-			<!-- Name of right joint, defaults to `right_joint` -->
-			<rightJoint>right_motor_joint</rightJoint>
-
-			<publish_rate>10</publish_rate>
-
-			<!-- The distance from the center of one wheel to the other, in meters, defaults to 0.34 m -->
-			<wheelSeparation>0.199</wheelSeparation>
-
-			<!-- Diameter of the wheels, in meters, defaults to 0.15 m -->
-			<wheelDiameter>0.107</wheelDiameter>
-
-			<!-- Topics -->
-			<commandTopic>cmd_vel</commandTopic>
-			<odometryTopic>odom</odometryTopic>
-
-			<!-- Set if odom required -->
-			<publishOdom>true</publishOdom>
-			<publishOdomTF>true</publishOdomTF>
-
-			<publishTF>true</publishTF>
-
-			<!-- Frame IDs -->
-			<odometryFrame>odom</odometryFrame>
-			<robotBaseFrame>base_link</robotBaseFrame>
-
-			<odometrySource>world</odometrySource>
-
-			<!-- Set odom covariance -->
-			<covariance_x>0.0001</covariance_x>
-			<covariance_y>0.0001</covariance_y>
-			<covariance_z>0.0001</covariance_z>
-		</plugin>
+    	<plugin name='gz::sim::systems::DiffDrive' 
+			filename='gz-sim-diff-drive-system'>
+    	  <left_joint>left_motor_joint</left_joint>
+    	  <right_joint>right_motor_joint</right_joint>
+    	  <wheel_separation>0.199</wheel_separation>
+    	  <wheel_radius>0.535</wheel_radius>
+    	  <odom_publish_frequency>1</odom_publish_frequency>
+    	  <max_linear_acceleration>1</max_linear_acceleration>
+    	  <min_linear_acceleration>-1</min_linear_acceleration>
+    	  <max_angular_acceleration>2</max_angular_acceleration>
+    	  <min_angular_acceleration>-2</min_angular_acceleration>
+    	  <max_linear_velocity>0.5</max_linear_velocity>
+    	  <min_linear_velocity>-0.5</min_linear_velocity>
+    	  <max_angular_velocity>1</max_angular_velocity>
+    	  <min_angular_velocity>-1</min_angular_velocity>
+    	</plugin>
 	</gazebo>
 
-	
+	<gazebo>
+		<plugin name='gz::sim::systems::JointStatePublisher' 
+			filename='libgz-sim-joint-state-publisher-system.so'/>
+	</gazebo>
+
 	<gazebo reference="lidar_1">
-		<sensor name="front_rplidar" type="ray">
-			<always_on>true</always_on>
-			<visualize>false</visualize>
-			<pose>-0.064 0 0.121 0 0 0</pose>
-			<update_rate>5</update_rate>
-			<ray>
-			  <scan>
-				<horizontal>
-				  <samples>360</samples>
-				  <resolution>1.000000</resolution>
-				  <min_angle>0.000000</min_angle>
-				  <max_angle>6.280000</max_angle>
-				</horizontal>
-			  </scan>
-			  <range>
-				<min>0.120000</min>
-				<max>6</max>
-				<resolution>0.015000</resolution>
-			  </range>
-			  <noise>
-				<type>gaussian</type>
-				<mean>0.0</mean>
-				<stddev>0.01</stddev>
-			  </noise>
-			</ray>
-			<plugin name="gazebo_ros_front_rplidar_controller" filename="libgazebo_ros_laser.so">
-				<topicName>/laser/scan</topicName>
-				<frameName>lidar_1</frameName>
-			</plugin>
-		  </sensor>
+		<sensor name='front_rplidar' type='gpu_lidar'>
+        <topic>lidar</topic>
+		<visualize>false</visualize>
+        <pose>-0.064 0 0.121 0 0 0</pose>
+        <always_on>1</always_on>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+			<horizontal>
+			  <samples>360</samples>
+			  <resolution>1.000000</resolution>
+			  <min_angle>0.000000</min_angle>
+			  <max_angle>6.280000</max_angle>
+			</horizontal>
+          </scan>
+          <range>
+			<min>0.120000</min>
+			<max>6</max>
+			<resolution>0.015000</resolution>
+          </range>
+		  <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+      </sensor>
 	</gazebo>
 
 <!--

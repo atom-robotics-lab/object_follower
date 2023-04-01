@@ -28,6 +28,7 @@ install(
 	launch
 	models
   worlds
+  gazebo
   meshes
   urdf
 	DESTINATION

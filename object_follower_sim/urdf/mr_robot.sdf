@@ -1,0 +1,266 @@
+<?xml version="1.0" ?>
+<sdf version='1.10'>
+  <model name='mr_robot'>
+    <link name='base_link'>
+      <inertial>
+        <pose>0.007271866651243063 -0.00078354928790723942 0.070772771499778425 0 0 0</pose>
+        <mass>12.696948748386539</mass>
+        <inertia>
+          <ixx>0.1038547661311721</ixx>
+          <ixy>-1.890397202324875e-06</ixy>
+          <ixz>-0.003051093455436968</ixz>
+          <iyy>0.11923668931402059</iyy>
+          <iyz>4.6322252824291018e-05</iyz>
+          <izz>0.20243494656800581</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://object_follower_sim/meshes/base_link.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.20000000000000001</mu>
+              <mu2>0.20000000000000001</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__lidar_1_collision_1'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://object_follower_sim/meshes/lidar_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.20000000000000001</mu>
+              <mu2>0.20000000000000001</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://object_follower_sim/meshes/base_link.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.875 0.875 0.875 1</diffuse>
+          <ambient>0.875 0.875 0.875 1</ambient>
+        </material>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__lidar_1_visual_1'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://object_follower_sim/meshes/lidar_1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.875 0.875 0.875 1</diffuse>
+          <ambient>0.875 0.875 0.875 1</ambient>
+        </material>
+      </visual>
+      <gravity>true</gravity>
+      <self_collide>true</self_collide>
+      <sensor name='front_rplidar' type='gpu_lidar'>
+        <topic>lidar</topic>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+			      <horizontal>
+			        <samples>360</samples>
+			        <resolution>1.000000</resolution>
+			        <min_angle>0.000000</min_angle>
+			        <max_angle>6.280000</max_angle>
+			      </horizontal>
+          </scan>
+          <range>
+			      <min>0.120000</min>
+			      <max>6</max>
+			      <resolution>0.015000</resolution>
+          </range>
+		      <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <visualize>false</visualize>
+        <pose>0.096699999999999994 -0.0017589999999999999 0.108682 0 0 0</pose>
+        <always_on>1</always_on>
+      </sensor>
+    </link>
+    <joint name='left_motor_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.0034450000000000001 0.098820000000000005 0.052283000000000003 0 0 0</pose>
+      <parent>base_link</parent>
+      <child>l_tyre_1</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-inf</lower>
+          <upper>inf</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='l_tyre_1'>
+      <pose relative_to='left_motor_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>9.6826642769637372e-08 0.0025262758714060811 -5.1894623383230698e-08 0 0 0</pose>
+        <mass>1.439748427644262</mass>
+        <inertia>
+          <ixx>0.0014400000000000001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0024599999999999999</iyy>
+          <iyz>0</iyz>
+          <izz>0.0014400000000000001</izz>
+        </inertia>
+      </inertial>
+      <collision name='l_tyre_1_collision'>
+        <pose>0.0034450000000000001 -0.098820000000000005 -0.052283000000000003 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://object_follower_sim/meshes/l_tyre_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.20000000000000001</mu>
+              <mu2>0.20000000000000001</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='l_tyre_1_visual'>
+        <pose>0.0034450000000000001 -0.098820000000000005 -0.052283000000000003 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://object_follower_sim/meshes/l_tyre_1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.875 0.875 0.875 1</diffuse>
+          <ambient>0.875 0.875 0.875 1</ambient>
+        </material>
+      </visual>
+      <self_collide>true</self_collide>
+    </link>
+    <joint name='right_motor_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.0034450000000000001 -0.10058 0.052283000000000003 0 0 0</pose>
+      <parent>base_link</parent>
+      <child>r_tyre_1</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-inf</lower>
+          <upper>inf</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='r_tyre_1'>
+      <pose relative_to='right_motor_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>9.6826590479867636e-08 -0.0025255491042249778 -5.1894622932202588e-08 0 0 0</pose>
+        <mass>1.439748427644262</mass>
+        <inertia>
+          <ixx>0.0014400000000000001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0024599999999999999</iyy>
+          <iyz>0</iyz>
+          <izz>0.0014400000000000001</izz>
+        </inertia>
+      </inertial>
+      <collision name='r_tyre_1_collision'>
+        <pose>0.0034450000000000001 0.10058 -0.052283000000000003 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://object_follower_sim/meshes/r_tyre_1.stl</uri>
+          </mesh>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.20000000000000001</mu>
+              <mu2>0.20000000000000001</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='r_tyre_1_visual'>
+        <pose>0.0034450000000000001 0.10058 -0.052283000000000003 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.001 0.001 0.001</scale>
+            <uri>model://object_follower_sim/meshes/r_tyre_1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.875 0.875 0.875 1</diffuse>
+          <ambient>0.875 0.875 0.875 1</ambient>
+        </material>
+      </visual>
+      <self_collide>true</self_collide>
+    </link>
+    <plugin name='gz::sim::systems::DiffDrive' filename='gz-sim-diff-drive-system'>
+      <left_joint>left_motor_joint</left_joint>
+      <right_joint>right_motor_joint</right_joint>
+      <wheel_separation>0.199</wheel_separation>
+      <wheel_radius>0.535</wheel_radius>
+      <odom_publish_frequency>1</odom_publish_frequency>
+      <max_linear_acceleration>1</max_linear_acceleration>
+      <min_linear_acceleration>-1</min_linear_acceleration>
+      <max_angular_acceleration>2</max_angular_acceleration>
+      <min_angular_acceleration>-2</min_angular_acceleration>
+      <max_linear_velocity>0.5</max_linear_velocity>
+      <min_linear_velocity>-0.5</min_linear_velocity>
+      <max_angular_velocity>1</max_angular_velocity>
+      <min_angular_velocity>-1</min_angular_velocity>
+    </plugin>
+    <plugin name='gz::sim::systems::JointStatePublisher' filename='libgz-sim-joint-state-publisher-system.so'/>
+    <frame name='lidar_fixed' attached_to='base_link'>
+      <pose>0.096699999999999994 -0.0017589999999999999 0.108682 0 0 0</pose>
+    </frame>
+    <frame name='lidar_1' attached_to='lidar_fixed'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>

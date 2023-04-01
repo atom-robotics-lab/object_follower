@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <sdf version='1.10'>
   <world name='empty'>
     <physics name='1ms' type='ignored'>
@@ -9,6 +10,14 @@
     <plugin name='gz::sim::systems::UserCommands' filename='gz-sim-user-commands-system'/>
     <plugin name='gz::sim::systems::SceneBroadcaster' filename='gz-sim-scene-broadcaster-system'/>
     <plugin name='gz::sim::systems::Contact' filename='gz-sim-contact-system'/>
+    <!-- Generates rendering sensor data -->
+    <plugin
+      filename="libgz-sim-sensors-system.so"
+      name="gz::sim::systems::Sensors">
+      <!-- ogre2 not working with just the MESA_GL_VERSION_OVERRIDE=3.3 trick -->
+      <render_engine>ogre</render_engine>
+    </plugin>
+
     <gravity>0 0 -9.8000000000000007</gravity>
     <magnetic_field>5.5644999999999998e-06 2.2875799999999999e-05 -4.2388400000000002e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
@@ -526,8 +535,8 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.300000012 0.300000012 0.300000012 1</ambient>
-            <diffuse>0.699999988 0.699999988 0.699999988 1</diffuse>
+            <ambient>0.00 1.0 0.00 1</ambient>
+            <diffuse>0.00 1.0 0.00 1</diffuse>
             <specular>1 1 1 1</specular>
           </material>
         </visual>
