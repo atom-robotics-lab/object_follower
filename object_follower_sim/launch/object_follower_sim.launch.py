@@ -32,8 +32,15 @@ def generate_launch_description():
                     os.path.join(pkg_object_follower_sim, "launch", "mr_robot.launch.py")
                 )   
             )
+    
+    parameter_bridge = Node(package="ros_gz_bridge", executable="parameter_bridge",
+                            parameters = [
+                                {'config_file': os.path.join(pkg_object_follower_sim, "config", "bridge.yaml")}
+                                ],
+                    )
 
     return LaunchDescription([
         gazebo,
-        robot
+        robot,
+        parameter_bridge
     ])

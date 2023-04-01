@@ -31,6 +31,7 @@ install(
   gazebo
   meshes
   urdf
+  config
 	DESTINATION
 	share/${PROJECT_NAME}/
 )
