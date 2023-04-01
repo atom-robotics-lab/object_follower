@@ -83,7 +83,7 @@
       <gravity>true</gravity>
       <self_collide>true</self_collide>
       <sensor name='front_rplidar' type='gpu_lidar'>
-        <topic>lidar</topic>
+        <topic>laser/scan</topic>
         <update_rate>10</update_rate>
         <ray>
           <scan>
@@ -152,7 +152,7 @@
           <always_on>1</always_on>
           <update_rate>30</update_rate>
           <visualize>true</visualize>
-          <topic>camera</topic>
+          <topic>color_camera/image_raw</topic>
         </sensor>
       </link>
     </model>
