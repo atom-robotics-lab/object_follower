@@ -53,5 +53,5 @@ def generate_launch_description():
         gazebo,
         robot,
         parameter_bridge,
-        #object_follower_node
+        object_follower_node
     ])

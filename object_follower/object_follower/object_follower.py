@@ -53,13 +53,13 @@ class ObjectFollower(Node):
     self.sum_ae= 0     # Sum of the error
     
   def callback(self,data):
-    #try:
-    self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")   # Converting Image to CV2 comatible datatype
-    self.control_loop()      
+    try:
+      self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")   # Converting Image to CV2 comatible datatype
+      self.control_loop()      
       
-    #except CvBridgeError as e:
-      #print(e)
-      #self.move(0.0,0.0)
+    except CvBridgeError as e:
+      print(e)
+      self.move(0.0,0.0)
       
   def control_loop(self):
     sc = ImageProcessing() # Creating an object of the class Image processing to process the incoming image
@@ -88,7 +88,7 @@ class ObjectFollower(Node):
           self.lt = "Go Forward"
 
         else:   # Object is in Center
-          self.move(self.pl*(self.radius_threshold-result[3]),0)          
+          self.move(self.pl*(self.radius_threshold-result[3]),0.0)          
           self.at = "Center"
           self.lt = "Go Forward"
       
@@ -104,7 +104,7 @@ class ObjectFollower(Node):
           self.lt = "Go Backward"
 
         else:  # Object is in Center
-          self.move(self.pl*(self.radius_threshold-result[3]),0)
+          self.move(self.pl*(self.radius_threshold-result[3]),0.0)
           self.at = "Center"
           self.lt = "Go Backward"
 
