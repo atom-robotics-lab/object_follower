@@ -110,11 +110,8 @@
         <always_on>1</always_on>
       </sensor>
     </link>
-
-    <model name="camera">
-      <pose>0.056699999999999994 -0.0517589999999999999 0.113682 0 0 0</pose>
-      <link name="camera_link">
-        <pose>0.05 0.05 0.05 0 0 0</pose>
+    <link name="camera_link">
+        <pose>0.056699999999999994 -0.0517589999999999999 0.163682 0 0 0</pose>
         <inertial>
           <mass>0.1</mass>
           <inertia>
@@ -155,7 +152,23 @@
           <topic>color_camera/image_raw</topic>
         </sensor>
       </link>
-    </model>
+
+      <joint name='camera_fixed_joint' type='fixed'>
+      <pose relative_to='base_link'>0.056699999999999994 -0.0517589999999999999 0.153682 0 0 0</pose>
+      <parent>base_link</parent>
+      <child>camera_link</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-inf</lower>
+          <upper>inf</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
 
     
 
@@ -295,14 +308,12 @@
       <wheel_separation>0.199</wheel_separation>
       <wheel_radius>0.535</wheel_radius>
       <odom_publish_frequency>1</odom_publish_frequency>
-      <max_linear_acceleration>1</max_linear_acceleration>
-      <min_linear_acceleration>-1</min_linear_acceleration>
-      <max_angular_acceleration>2</max_angular_acceleration>
-      <min_angular_acceleration>-2</min_angular_acceleration>
-      <max_linear_velocity>0.5</max_linear_velocity>
-      <min_linear_velocity>-0.5</min_linear_velocity>
-      <max_angular_velocity>1</max_angular_velocity>
-      <min_angular_velocity>-1</min_angular_velocity>
+      <topic>cmd_vel</topic>
+      <odom_topic>odom</odom_topic>
+      <tf_topic>tf</tf_topic>
+
+
+
     </plugin>
     <plugin name='gz::sim::systems::JointStatePublisher' filename='libgz-sim-joint-state-publisher-system.so'/>
     <frame name='lidar_fixed' attached_to='base_link'>
@@ -312,7 +323,7 @@
       <pose>0 0 0 0 0 0</pose>
     </frame>
     <frame name='camera_fixed' attached_to='base_link'>
-      <pose>0.096699999999999994 -0.0013589999999999999 0.163682 0 0 0</pose>
+      <pose>0.096699999999999994 -0.0517589999999999999 0.153682 0 0 0</pose>
     </frame>
     
   </model>
