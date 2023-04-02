@@ -2,22 +2,22 @@
 
 # Import all the nessecary packages
 import rclpy
+from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from object_follower.ImageProcessing import ImageProcessing
 from cv_bridge import CvBridge, CvBridgeError
 import cv2
 from sensor_msgs.msg import Image
 
-object_follower_node = None
-
 
 # Create a class for object follower.value
-class ObjectFollower:
+class ObjectFollower(Node):
   def __init__(self):
+    super().__init__("object_follower")
+
     self.bridge = CvBridge() # Creating an Instance of CV Bridge
-    object_follower_node = rclpy.create_node("Object_Follower")
-    self.image_sub = object_follower_node.create_subscription(Image, "/rrbot/camera1/image_raw",self.callback, 1) # Subsciber for the Image feed
-    self.pub = object_follower_node.create_publisher(Twist, '/cmd_vel', 10)                     # Publisher to publish the velocities
+    self.image_sub = self.create_subscription(Image, "/color_camera/image_raw",self.callback, 10) # Subsciber for the Image feed
+    self.pub = self.create_publisher(Twist, '/cmd_vel', 10)                     # Publisher to publish the velocities
     self.velocity_msg = Twist()  # Creating a messgae from the Twist template  
     
     
@@ -27,23 +27,39 @@ class ObjectFollower:
     self.velocity_msg.angular.x = 0.0
     self.velocity_msg.angular.y = 0.0
 
-    self.radius_threshold= object_follower_node.declare_parameter("object_follower_controller/radius_threshold").value # The threshold radius of the circle to stop the Robot
-    self.pl = object_follower_node.declare_parameter("object_follower_controller/pl").value                            # linear propotional constant
-    self.pa = object_follower_node.declare_parameter("object_follower_controller/pa").value                            # Angular propotional constant
-    self.ia= object_follower_node.declare_parameter("object_follower_controller/ia").value                             # Angular Integral constant
-    self.abuffer = object_follower_node.declare_parameter("object_follower_controller/abuffer").value                    # Angular Buffer
-    self.lbuffer = object_follower_node.declare_parameter("object_follower_controller/lbuffer").value                    # Linear Buffer
+    self.declare_parameters(
+            namespace='',
+            parameters=[
+                ('theta_precision', 0.0),
+                ('distance_precision', 0.0),
+                ('pl', 0.0),
+                ('pa', 0.0),
+                ('ia', 0.0),
+                ('radius_threshold', 0),
+                ('sum_ae', 0),
+                ('abuffer', 0),
+                ('lbuffer', 0)
+            ])
+
+    self.theta_precision = self.get_parameter("radius_threshold").value
+    self.distance_precision = self.get_parameter("radius_threshold").value
+    self.radius_threshold = self.get_parameter("radius_threshold").value # The threshold radius of the circle to stop the Robot
+    self.pl = self.get_parameter("pl").value                            # linear propotional constant
+    self.pa = self.get_parameter("pa").value                            # Angular propotional constant
+    self.ia= self.get_parameter("ia").value                             # Angular Integral constant
+    self.abuffer = self.get_parameter("abuffer").value                    # Angular Buffer
+    self.lbuffer = self.get_parameter("lbuffer").value                    # Linear Buffer
 
     self.sum_ae= 0     # Sum of the error
     
   def callback(self,data):
-    try:
-      self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")   # Converting Image to CV2 comatible datatype
-      self.control_loop()      
+    #try:
+    self.cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")   # Converting Image to CV2 comatible datatype
+    self.control_loop()      
       
-    except CvBridgeError as e:
-      print(e)
-      self.move(0,0)
+    #except CvBridgeError as e:
+      #print(e)
+      #self.move(0.0,0.0)
       
   def control_loop(self):
     sc = ImageProcessing() # Creating an object of the class Image processing to process the incoming image
@@ -53,7 +69,7 @@ class ObjectFollower:
     
 
     if(result[3]== None and result[2]==None): # No object found
-      self.move(0,-0.5)
+      self.move(0.0,-0.5)
       self.at = "Finding Object"
       self.lt = "Stop"
     else:  # Object had been detected in the Image feed
@@ -94,18 +110,18 @@ class ObjectFollower:
 
       else:  # Object is at the correct Distance
         if result[2][0]>(x_length/2+self.abuffer): # Object is Towards Right    
-          self.move(0,self.pa*ae+self.ia*self.sum_ae)
+          self.move(0.0,self.pa*ae+self.ia*self.sum_ae)
           self.at = "Right==>"
           self.lt = "Stop"
 
 
         elif result[2][0]<(x_length/2-self.abuffer): # Object is Towards Left       
-          self.move(0,self.pa*ae+self.ia*self.sum_ae) 
+          self.move(0.0,self.pa*ae+self.ia*self.sum_ae) 
           self.at = "<==Left"
           self.lt = "Stop"
 
         else: # Object is in Center         
-          self.move(0,0)
+          self.move(0.0,0.0)
           self.at = "Center"
           self.lt = "Stop"
 
@@ -135,20 +151,18 @@ class ObjectFollower:
 
 def main():
   rclpy.init()
-  object_follower_node = rclpy.create_node("Object_Follower")
-  of = ObjectFollower()   # Create an object of the ObjectFollower Class
+  of = ObjectFollower()   # Create an object of the ObjectFollower Class  
   
   try:
-    rclpy.spin(object_follower_node)
+    rclpy.spin(of)
     
   except Exception as e:
-
     print(e)
 
 
   cv2.destroyAllWindows()
 
-
-#main()
+if __name__=="__main__" :
+  main()
 
 	

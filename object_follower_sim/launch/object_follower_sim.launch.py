@@ -13,6 +13,9 @@ def generate_launch_description():
 
     pkg_ros_gz_sim = get_package_share_directory("ros_gz_sim")
     pkg_object_follower_sim = get_package_share_directory("object_follower_sim")
+    pkg_object_follower = get_package_share_directory("object_follower")
+
+    config = os.path.join(pkg_object_follower,'config','params.yaml')
 
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
@@ -38,9 +41,17 @@ def generate_launch_description():
                                 {'config_file': os.path.join(pkg_object_follower_sim, "config", "bridge.yaml")}
                                 ],
                     )
+    
+    object_follower_node=Node(
+        package = 'object_follower',
+        name = 'object_follower',
+        executable = 'object_follower',
+        parameters = [config]
+    )
 
     return LaunchDescription([
         gazebo,
         robot,
-        parameter_bridge
+        parameter_bridge,
+        #object_follower_node
     ])
