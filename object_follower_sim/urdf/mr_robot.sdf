@@ -111,7 +111,7 @@
       </sensor>
     </link>
     <link name="camera_link">
-        <pose>0.056699999999999994 -0.0517589999999999999 0.163682 0 0 0</pose>
+        <pose>0.096699999999999994 -0.00017589999999999999 0.153682 0 0 0</pose>
         <inertial>
           <mass>0.1</mass>
           <inertia>
@@ -154,7 +154,7 @@
       </link>
 
       <joint name='camera_fixed_joint' type='fixed'>
-      <pose relative_to='base_link'>0.056699999999999994 -0.0517589999999999999 0.153682 0 0 0</pose>
+      <pose relative_to='base_link'>0.056699999999999994 -0.6517589999999999999 0.153682 0 0 0</pose>
       <parent>base_link</parent>
       <child>camera_link</child>
       <axis>
@@ -325,7 +325,7 @@
       <pose>0 0 0 0 0 0</pose>
     </frame>
     <frame name='camera_fixed' attached_to='base_link'>
-      <pose>0.096699999999999994 -0.0517589999999999999 0.153682 0 0 0</pose>
+      <pose>0.096699999999999994 -0.6517589999999999999 0.153682 0 0 0</pose>
     </frame>
     
   </model>
