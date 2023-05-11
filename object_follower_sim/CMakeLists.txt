@@ -8,10 +8,15 @@ project(object_follower_sim)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  std_msgs
+geometry_msgs
+std_msgs
+image_transport
+roscpp
+rospy
+sensor_msgs
+cv_bridge
 )
+find_package(OpenCV)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -118,6 +123,7 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -191,6 +197,8 @@ include_directories(
 #   # myfile2
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
+add_executable( DisplayImage src/object_tracking.cpp)
+target_link_libraries( DisplayImage ${OpenCV_LIBS} ${catkin_LIBRARIES} )
 
 #############
 ## Testing ##
@@ -204,3 +212,5 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+INCLUDE_DIRECTORIES(/usr/local/lib)
+LINK_DIRECTORIES(/usr/local/lib)
