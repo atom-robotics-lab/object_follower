@@ -1,5 +1,23 @@
 import cv2
 import imutils
+import argparse
+import os
+import imghdr
+
+# Default image path (to be set)
+imgPath = os.path.abspath("assets/Images/sample.jpg")
+#Initializing the parser
+parser = argparse.ArgumentParser()
+parser.add_argument("--path", type=str, required=False)
+args = parser.parse_args()
+
+# Obtaining absolute path from relative path for the usage of imghdr.what() function
+# Setiing the image path if correctly provided by the user as an argument
+if args.path and os.path.isfile(args.path):
+	absPath = os.path.abspath(args.path)
+	imgPath =  absPath if imghdr.what(absPath) else imgPath
+
+print(imgPath)
 
 class ImageProcessing:
 	def __init__(self,lower=(29, 86, 6), upper=(64, 255, 255)):
@@ -44,8 +62,7 @@ class ImageProcessing:
 		 
 if __name__=="__main__":
 	sc = ImageProcessing((29, 86, 6),(64, 255, 255))
-	result=sc.fun(cv2.imread("/home/dhruv/Desktop/ball tracking/sample.png"))
-
+	result=sc.process_image(cv2.imread(imgPath))
 	
 	cv2.imshow("Frame",result[0])
 	cv2.imshow("Mask",result[1])
